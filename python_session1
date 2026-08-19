@@ -1,0 +1,1388 @@
+============================================================
+              PYTHON INTERACTIVE LEARNING
+                   REVISION NOTES - Session 1
+============================================================
+
+PURPOSE:
+--------
+Use this document as a quick reference when revising the
+Python concepts covered so far.
+
+Learning approach:
+- Understand the logic first.
+- Write code yourself.
+- Use examples to reinforce the concept.
+- Don't memorize syntax blindly.
+
+
+============================================================
+1. VARIABLES & ASSIGNMENT
+============================================================
+
+A variable stores a value.
+
+Example:
+
+employee = "Naveen"
+score = 82
+salary = 100000
+
+Python determines the type automatically.
+
+You can change a variable:
+
+score = 82
+score = 90
+
+Now score is 90.
+
+
+IMPORTANT:
+----------
+= means ASSIGNMENT
+
+score = 82
+
+It means:
+"Put the value 82 into score."
+
+
+============================================================
+2. BASIC DATA TYPES
+============================================================
+
+Common Python data types:
+
+String:
+    name = "Naveen"
+
+Integer:
+    age = 30
+
+Float:
+    salary = 100000.50
+
+Boolean:
+    is_active = True
+
+Boolean values:
+    True
+    False
+
+
+============================================================
+3. STRINGS & f-STRINGS
+============================================================
+
+Strings are text:
+
+name = "Naveen"
+
+You can combine values into output using f-strings:
+
+age = 30
+
+print(f"I am {age} years old")
+
+Output:
+I am 30 years old
+
+
+Example:
+
+employee = "Naveen"
+salary = 100000
+
+print(f"{employee} earns ${salary}")
+
+Output:
+Naveen earns $100000
+
+
+MENTAL MODEL:
+-------------
+f"static text {variable} static text"
+
+Anything inside { } can contain a variable/expression.
+
+
+============================================================
+4. IF / ELIF / ELSE
+============================================================
+
+Used to make decisions.
+
+Example:
+
+score = 82
+
+if score >= 90:
+    print("20% bonus")
+elif score >= 75:
+    print("10% bonus")
+elif score >= 60:
+    print("5% bonus")
+else:
+    print("No bonus")
+
+
+IMPORTANT:
+----------
+Python checks conditions from TOP to BOTTOM.
+
+Once a condition is True, that block executes and
+the remaining elif/else conditions are skipped.
+
+
+Example:
+
+score = 75
+
+if score >= 90:
+    ...
+elif score >= 75:
+    ...
+    
+The second condition executes.
+
+
+============================================================
+5. COMPARISON OPERATORS
+============================================================
+
+Used to compare values.
+
+==      equal to
+!=      not equal to
+>       greater than
+<       less than
+>=      greater than or equal to
+<=      less than or equal to
+
+
+Examples:
+
+score >= 75
+
+salary < 100000
+
+department == "Finance"
+
+
+IMPORTANT:
+----------
+=   assignment
+
+==  comparison
+
+
+============================================================
+6. FOR LOOPS
+============================================================
+
+Used to process each item in a collection.
+
+Example:
+
+salaries = [50000, 75000, 100000]
+
+for salary in salaries:
+    print(salary)
+
+
+Python processes:
+
+salary = 50000
+salary = 75000
+salary = 100000
+
+
+IMPORTANT:
+----------
+When you write:
+
+for salary in salaries:
+
+salary represents the ACTUAL VALUE,
+not the index.
+
+
+This:
+
+for salary in salaries:
+    print(salary)
+
+prints the salary values.
+
+
+============================================================
+7. LISTS
+============================================================
+
+Lists store multiple values.
+
+Example:
+
+salaries = [50000, 75000, 100000, 120000]
+
+
+Lists are:
+
+- Ordered
+- Changeable
+- Allow duplicates
+
+
+Example:
+
+numbers = [10, 20, 30]
+
+numbers[0] = 100
+
+Now:
+
+[100, 20, 30]
+
+
+LIST ACCESS:
+------------
+
+numbers = [10, 20, 30]
+
+numbers[0]    -> 10
+numbers[1]    -> 20
+numbers[2]    -> 30
+
+
+============================================================
+8. LIST + LOOP + IF
+============================================================
+
+One of the most important Python patterns.
+
+Example:
+
+salaries = [50000, 75000, 100000, 120000]
+
+for salary in salaries:
+    if salary >= 100000:
+        print(salary)
+
+
+Output:
+
+100000
+120000
+
+
+MENTAL MODEL:
+
+List
+  ↓
+Loop through each item
+  ↓
+Check condition
+  ↓
+Process matching items
+
+
+============================================================
+9. ACCUMULATOR / RUNNING TOTAL
+============================================================
+
+Used when you need to continuously add values.
+
+Example:
+
+total_raise = 0
+
+for salary in salaries:
+    if salary < 100000:
+        bonus = 0.10
+        bonus_amount = salary * bonus
+        total_raise += bonus_amount
+
+
+The following:
+
+total_raise += bonus_amount
+
+is equivalent to:
+
+total_raise = total_raise + bonus_amount
+
+
+Example:
+
+total_raise = 0
+
+Add 5000:
+total_raise = 5000
+
+Add 7500:
+total_raise = 12500
+
+
+This pattern is extremely common.
+
+
+============================================================
+10. COUNTER
+============================================================
+
+Similar to an accumulator, but used for counting.
+
+Example:
+
+employees_with_raise = 0
+
+for salary in salaries:
+    if salary < 100000:
+        employees_with_raise += 1
+
+
+Equivalent to:
+
+employees_with_raise = employees_with_raise + 1
+
+
+Useful for questions like:
+
+- How many employees received a bonus?
+- How many transactions matched?
+- How many records failed?
+
+
+============================================================
+11. PERCENTAGE CALCULATIONS
+============================================================
+
+10% is represented as:
+
+0.10
+
+5%:
+
+0.05
+
+20%:
+
+0.20
+
+
+Example:
+
+salary = 100000
+bonus = 0.10
+
+bonus_amount = salary * bonus
+
+Result:
+
+10000
+
+
+If calculating final salary:
+
+new_salary = salary + bonus_amount
+
+Result:
+
+110000
+
+
+IMPORTANT:
+----------
+salary * 0.10
+
+gives the BONUS AMOUNT.
+
+It does NOT give the new salary.
+
+
+============================================================
+12. FUNCTIONS
+============================================================
+
+Functions allow us to package reusable logic.
+
+Example:
+
+def calculate_bonus(salary, bonus_percentage):
+    bonus = salary * bonus_percentage
+    return bonus
+
+
+A function has:
+
+def
+function name
+parameters
+function body
+return value
+
+
+============================================================
+13. PARAMETERS vs ARGUMENTS
+============================================================
+
+Function definition:
+
+def calculate_bonus(salary, bonus_percentage):
+
+salary and bonus_percentage are PARAMETERS.
+
+
+Function call:
+
+calculate_bonus(75000, 0.10)
+
+75000 and 0.10 are ARGUMENTS.
+
+
+Simple mental model:
+
+PARAMETER:
+    Placeholder defined by the function.
+
+ARGUMENT:
+    Actual value supplied when calling the function.
+
+
+============================================================
+14. RETURN
+============================================================
+
+return sends a value back from the function.
+
+Example:
+
+def calculate_bonus(salary, bonus_percentage):
+    bonus = salary * bonus_percentage
+    return bonus
+
+
+Call:
+
+bonus_amount = calculate_bonus(75000, 0.10)
+
+
+Process:
+
+75000 × 0.10
+     ↓
+7500
+     ↓
+return 7500
+     ↓
+bonus_amount = 7500
+
+
+IMPORTANT:
+----------
+Defining a function does NOT execute it.
+
+This defines it:
+
+def calculate_bonus(...):
+    ...
+
+
+This executes it:
+
+calculate_bonus(75000, 0.10)
+
+
+============================================================
+15. LIST vs TUPLE
+============================================================
+
+LIST:
+
+numbers = [10, 20, 30]
+
+- Ordered
+- Changeable
+- Allows duplicates
+
+
+TUPLE:
+
+numbers = (10, 20, 30)
+
+- Ordered
+- Cannot be changed
+- Allows duplicates
+
+
+MENTAL MODEL:
+
+LIST:
+    Collection that may change.
+
+TUPLE:
+    Fixed group of related values.
+
+
+Examples where tuple makes sense:
+
+coordinates = (32.7767, -96.7970)
+
+days = (
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+)
+
+
+Another common use:
+
+def get_employee():
+    return "Naveen", 100000
+
+
+============================================================
+16. SETS
+============================================================
+
+Sets store UNIQUE values.
+
+Example:
+
+numbers = {10, 20, 20, 30, 40, 40, 50}
+
+
+Duplicates are automatically removed.
+
+Result:
+
+{10, 20, 30, 40, 50}
+
+
+Convert a list to a set:
+
+numbers = [10, 20, 20, 30, 40]
+
+unique_numbers = set(numbers)
+
+
+Useful when the requirement is:
+
+"Give me only unique values."
+
+
+============================================================
+17. SET INTERSECTION (&)
+============================================================
+
+Intersection means:
+
+"Values that exist in BOTH sets."
+
+Example:
+
+system_a = {101, 102, 103, 104}
+system_b = {103, 104, 105, 106}
+
+common = system_a & system_b
+
+
+Result:
+
+{103, 104}
+
+
+RECONCILIATION MENTAL MODEL:
+
+A & B
+    ↓
+Present in BOTH systems
+
+
+============================================================
+18. SET DIFFERENCE (-)
+============================================================
+
+A - B means:
+
+"Values in A that are NOT in B."
+
+Example:
+
+system_a = {101, 102, 103, 104}
+system_b = {103, 104, 105, 106}
+
+system_a - system_b
+
+
+Result:
+
+{101, 102}
+
+
+In reconciliation terms:
+
+A - B
+    ↓
+Present in A
+but missing from B
+
+
+IMPORTANT:
+----------
+Set subtraction is directional.
+
+A - B != B - A
+
+
+B - A gives:
+
+{105, 106}
+
+
+============================================================
+19. SET UNION (|)
+============================================================
+
+Union means:
+
+"Everything from both sets."
+
+Example:
+
+system_a = {101, 102, 103, 104}
+system_b = {103, 104, 105, 106}
+
+system_a | system_b
+
+
+Result:
+
+{101, 102, 103, 104, 105, 106}
+
+
+RECONCILIATION MENTAL MODEL:
+
+A & B
+    → common transactions
+
+A - B
+    → missing from B
+
+B - A
+    → missing from A
+
+A | B
+    → everything from both
+
+
+============================================================
+20. DICTIONARIES
+============================================================
+
+A dictionary stores data as:
+
+KEY : VALUE
+
+
+Example:
+
+employee = {
+    "name": "Naveen",
+    "salary": 100000,
+    "department": "Finance"
+}
+
+
+Think of it as:
+
+name       → Naveen
+salary     → 100000
+department → Finance
+
+
+============================================================
+21. READING DICTIONARY VALUES
+============================================================
+
+Use:
+
+dictionary["key"]
+
+
+Example:
+
+employee["name"]
+
+employee["salary"]
+
+employee["department"]
+
+
+Results:
+
+Naveen
+100000
+Finance
+
+
+MENTAL MODEL:
+
+employee["salary"]
+
+means:
+
+"Go into employee and give me the value
+associated with the salary key."
+
+
+============================================================
+22. UPDATING DICTIONARY VALUES
+============================================================
+
+Example:
+
+employee["salary"] = 120000
+
+
+The existing value is replaced.
+
+Before:
+
+salary → 100000
+
+After:
+
+salary → 120000
+
+
+============================================================
+23. ADDING A NEW DICTIONARY KEY
+============================================================
+
+You can add a new key simply by assigning it.
+
+Example:
+
+employee["location"] = "Dallas"
+
+
+Now:
+
+{
+    "name": "Naveen",
+    "salary": 120000,
+    "department": "Finance",
+    "location": "Dallas"
+}
+
+
+============================================================
+24. LIST OF DICTIONARIES
+============================================================
+
+Very common Python structure.
+
+Example:
+
+employees = [
+    {
+        "name": "John",
+        "salary": 80000,
+        "department": "Finance"
+    },
+    {
+        "name": "Sarah",
+        "salary": 120000,
+        "department": "Technology"
+    },
+    {
+        "name": "Mike",
+        "salary": 95000,
+        "department": "Finance"
+    }
+]
+
+
+Mental model:
+
+employees
+    ↓
+LIST
+    ↓
+employee dictionary
+    ↓
+name / salary / department
+
+
+============================================================
+25. LOOPING THROUGH LIST OF DICTIONARIES
+============================================================
+
+Example:
+
+for employee in employees:
+    print(employee["name"])
+
+
+Output:
+
+John
+Sarah
+Mike
+
+
+Pattern:
+
+for employee in employees:
+    employee["key"]
+
+
+This pattern is extremely important for:
+
+- JSON
+- APIs
+- Database data
+- Business data
+- Financial transactions
+
+
+============================================================
+26. FILTERING DICTIONARIES
+============================================================
+
+Example:
+
+for employee in employees:
+    if employee["department"] == "Finance":
+        print(
+            f"{employee['name']} -> ${employee['salary']}"
+        )
+
+
+This prints only Finance employees.
+
+
+MENTAL MODEL:
+
+LIST
+ ↓
+LOOP
+ ↓
+DICTIONARY
+ ↓
+CHECK VALUE
+ ↓
+IF MATCH
+ ↓
+PROCESS
+
+
+============================================================
+27. AGGREGATING DATA FROM DICTIONARIES
+============================================================
+
+Example:
+
+total_finance_salary = 0
+
+for employee in employees:
+    if employee["department"] == "Finance":
+        total_finance_salary += employee["salary"]
+
+
+This calculates the total salary of Finance employees.
+
+
+With:
+
+John   → 80000
+Mike   → 95000
+
+
+Result:
+
+175000
+
+
+This pattern is:
+
+FILTER + ACCUMULATE
+
+
+Very important for real-world data processing.
+
+
+============================================================
+28. DICTIONARY .get()
+============================================================
+
+Direct access:
+
+employee["department"]
+
+
+If the key doesn't exist:
+
+KeyError
+
+
+Safer approach:
+
+employee.get("department")
+
+
+If key doesn't exist:
+
+None
+
+
+You can provide a default:
+
+employee.get("department", "Unknown")
+
+
+If department doesn't exist:
+
+Unknown
+
+
+Example:
+
+employee = {
+    "name": "Naveen",
+    "salary": 100000
+}
+
+print(employee.get("department", "Unknown"))
+
+
+Output:
+
+Unknown
+
+
+MENTAL MODEL:
+
+dictionary["key"]
+    → strict
+    → error if missing
+
+
+dictionary.get("key")
+    → safe
+    → returns None if missing
+
+
+dictionary.get("key", default)
+    → safe
+    → returns default if missing
+
+
+============================================================
+29. NESTED DICTIONARIES
+============================================================
+
+A dictionary can contain another dictionary.
+
+Example:
+
+employee = {
+    "name": "Naveen",
+    "salary": 100000,
+    "address": {
+        "city": "Dallas",
+        "state": "Texas",
+        "zip": "75001"
+    }
+}
+
+
+Structure:
+
+employee
+    |
+    +-- name
+    |
+    +-- salary
+    |
+    +-- address
+           |
+           +-- city
+           +-- state
+           +-- zip
+
+
+To retrieve nested data:
+
+employee["address"]["city"]
+
+
+This is an important pattern because JSON/API data
+often has nested structures.
+
+
+============================================================
+30. COMMON PATTERNS WE HAVE LEARNED
+============================================================
+
+PATTERN 1: LOOP + CONDITION
+
+for item in items:
+    if condition:
+        process(item)
+
+
+PATTERN 2: RUNNING TOTAL
+
+total = 0
+
+for item in items:
+    total += item
+
+
+PATTERN 3: COUNTER
+
+count = 0
+
+for item in items:
+    if condition:
+        count += 1
+
+
+PATTERN 4: FILTER LIST OF DICTIONARIES
+
+for employee in employees:
+    if employee["department"] == "Finance":
+        process(employee)
+
+
+PATTERN 5: FUNCTION
+
+def calculate_something(input):
+    result = ...
+    return result
+
+
+PATTERN 6: FUNCTION + LOOP
+
+for item in items:
+    result = calculate_something(item)
+
+
+============================================================
+31. BUSINESS PROBLEM-SOLVING PATTERN
+============================================================
+
+A very important approach we've been practicing:
+
+BUSINESS REQUIREMENT
+        ↓
+Identify the data
+        ↓
+Choose data structure
+        ↓
+Determine conditions
+        ↓
+Loop through data if needed
+        ↓
+Perform calculation
+        ↓
+Accumulate/count if needed
+        ↓
+Return/store result
+        ↓
+Display/use result
+
+
+Example:
+
+"Give Finance employees a 10% bonus."
+
+Break it down:
+
+1. Data:
+   employees list
+
+2. Each employee:
+   dictionary
+
+3. Condition:
+   department == "Finance"
+
+4. Calculation:
+   salary × 0.10
+
+5. Total:
+   accumulator
+
+6. Output:
+   f-string
+
+
+This is the type of thinking we want to develop.
+
+
+============================================================
+32. IMPORTANT MISTAKES WE ENCOUNTERED
+============================================================
+
+MISTAKE 1:
+----------
+
+for i in salaries:
+    print(salaries[i])
+
+
+Why?
+
+Because i contains the VALUE, not the index.
+
+Correct:
+
+for salary in salaries:
+    print(salary)
+
+
+MISTAKE 2:
+----------
+
+salary * 0.10
+
+was initially treated as the new salary.
+
+Actually:
+
+salary * 0.10
+    → bonus/raise amount
+
+salary + salary * 0.10
+    → new salary
+
+
+MISTAKE 3:
+----------
+
+A function can be defined without executing.
+
+Definition:
+
+def calculate_bonus(...):
+    ...
+
+
+Execution:
+
+calculate_bonus(75000, 0.10)
+
+
+MISTAKE 4:
+----------
+
+Confusing set operations:
+
+A & B
+    → common
+
+A - B
+    → only A
+
+A | B
+    → everything
+
+
+MISTAKE 5:
+----------
+
+Using dictionary variable name incorrectly.
+
+If the variable is:
+
+employee = {...}
+
+Use:
+
+employee["name"]
+
+not:
+
+employees["name"]
+
+
+MISTAKE 6:
+----------
+
+Nested quotes inside an f-string.
+
+Potentially problematic:
+
+print(f"Department: {employee.get("department", "Unknown")}")
+
+
+Safer:
+
+print(f"Department: {employee.get('department', 'Unknown')}")
+
+
+============================================================
+33. CURRENT KNOWLEDGE LEVEL
+============================================================
+
+You are comfortable with:
+
+- Variables
+- Basic data types
+- Conditions
+- Loops
+- Lists
+- Accumulators
+- Counters
+- Functions
+- Parameters
+- Arguments
+- Return values
+- Tuples
+- Sets
+- Set operations
+- Dictionaries
+- List of dictionaries
+- Filtering
+- Aggregation
+- .get()
+- Basic nested dictionaries
+
+
+============================================================
+34. TOPICS STILL TO COVER BEFORE
+    CONSIDERING CORE PYTHON COMPLETE
+============================================================
+
+1. Dictionaries — deeper concepts
+2. Tuple unpacking
+3. Dictionary methods
+4. Set methods
+5. Function scope
+6. Local vs global variables
+7. Default arguments
+8. Keyword arguments
+9. *args
+10. **kwargs
+11. List comprehensions
+12. Dictionary comprehensions
+13. Set comprehensions
+14. Exception handling
+15. try / except / else / finally
+16. Raising exceptions
+17. Modules
+18. import
+19. Creating your own modules
+20. File handling
+21. with statement
+22. Reading/writing text files
+23. JSON
+24. Working with JSON data
+25. Lambda functions
+26. map()
+27. filter()
+
+
+============================================================
+35. AFTER CORE PYTHON
+============================================================
+
+Next stage:
+
+INTERMEDIATE PYTHON
+
+- Object-Oriented Programming
+- Classes
+- Objects
+- __init__
+- Instance variables
+- Methods
+- Inheritance
+- Polymorphism
+- Encapsulation
+- Iterators
+- Generators
+- Decorators
+- Context managers
+- Virtual environments
+- Packages
+
+
+Then:
+
+REAL-WORLD PYTHON
+
+- APIs
+- Requests
+- JSON APIs
+- SQL
+- PostgreSQL
+- Python + SQL
+- Automation
+- Logging
+- Testing
+- Error handling
+- Configuration
+
+
+Then, based on career goals:
+
+DATA / AI / FINANCE
+
+- Pandas
+- NumPy
+- Data cleaning
+- Data analysis
+- Excel automation
+- Financial data processing
+- Anomaly detection
+- Machine learning fundamentals
+- AI APIs
+- LLM integration
+
+
+============================================================
+36. OUR LEARNING METHOD
+============================================================
+
+DO NOT:
+
+Watch a video
+    ↓
+Copy code
+    ↓
+Think "I understand it"
+
+
+INSTEAD:
+
+Learn concept
+    ↓
+Small challenge
+    ↓
+YOU write code
+    ↓
+I review it
+    ↓
+Fix mistakes
+    ↓
+Harder challenge
+    ↓
+Real-world problem
+
+
+The goal is:
+
+UNDERSTAND → THINK → WRITE → DEBUG → IMPROVE
+
+
+============================================================
+END OF REVISION NOTES - Session 1
+============================================================
