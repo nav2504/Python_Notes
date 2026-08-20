@@ -1,0 +1,1067 @@
+============================================================
+PYTHON REVISION NOTES — FUNCTIONS
+Scope + Function Arguments
+============================================================
+
+
+============================================================
+1. FUNCTION BASICS
+============================================================
+
+A function is a reusable block of code.
+
+Example:
+
+def calculate_bonus(salary, bonus_percentage):
+    bonus = salary * bonus_percentage
+    return bonus
+
+result = calculate_bonus(75000, 0.10)
+print(result)
+
+Output:
+7500.0
+
+
+------------------------------------------------------------
+PARAMETERS vs ARGUMENTS
+------------------------------------------------------------
+
+def calculate_bonus(salary, bonus_percentage):
+                      ↑        ↑
+                  PARAMETERS
+
+calculate_bonus(75000, 0.10)
+                 ↑      ↑
+             ARGUMENTS
+
+
+Parameter = variable defined in the function
+Argument = actual value passed when calling the function
+
+
+============================================================
+2. FUNCTION SCOPE
+============================================================
+
+Variables created inside a function are LOCAL to that function.
+
+Example:
+
+def create_employee():
+    name = "Naveen"
+    salary = 100000
+
+    return name
+
+employee_name = create_employee()
+
+print(employee_name)   # Naveen
+print(name)            # NameError
+
+
+The variable "name" belongs to create_employee().
+It does not exist outside the function.
+
+
+------------------------------------------------------------
+A FUNCTION CAN READ A GLOBAL VARIABLE
+------------------------------------------------------------
+
+company = "Apple"
+
+def get_company():
+    return company
+
+print(get_company())
+
+Output:
+Apple
+
+
+If Python doesn't find a variable inside the function,
+it looks outward for it.
+
+
+Basic lookup:
+
+1. Current function
+2. Enclosing function(s)
+3. Global scope
+4. Built-in scope
+
+
+============================================================
+3. LOCAL VARIABLE vs GLOBAL VARIABLE
+============================================================
+
+x = 10
+
+def test():
+    x = 20
+    print(x)
+
+test()
+print(x)
+
+
+Output:
+
+20
+10
+
+
+The x inside test() is LOCAL.
+
+The x outside the function is GLOBAL.
+
+They are separate variables.
+
+
+------------------------------------------------------------
+IMPORTANT
+------------------------------------------------------------
+
+A function's local variables are private to that function.
+
+Example:
+
+x = 10
+
+def first():
+    x = 20
+    second()
+
+def second():
+    print(x)
+
+first()
+
+Output:
+10
+
+
+second() cannot see first()'s local x.
+
+It looks in its own scope and then the global scope.
+
+
+============================================================
+4. NESTED FUNCTIONS
+============================================================
+
+A function can be defined inside another function.
+
+Example:
+
+x = "global"
+
+def outer():
+    x = "outer"
+
+    def inner():
+        print(x)
+
+    inner()
+
+outer()
+
+Output:
+outer
+
+
+inner() looks outward and finds x inside outer().
+
+
+Scope lookup:
+
+inner()
+  ↓
+inner scope
+  ↓
+outer scope
+  ↓
+global scope
+
+
+------------------------------------------------------------
+INNER VARIABLE SHADOWS OUTER VARIABLE
+------------------------------------------------------------
+
+x = "global"
+
+def outer():
+    x = "outer"
+
+    def inner():
+        x = "inner"
+        print(x)
+
+    inner()
+
+outer()
+
+Output:
+inner
+
+
+The closest matching variable wins.
+
+
+============================================================
+5. UnboundLocalError
+============================================================
+
+IMPORTANT TRAP:
+
+x = 10
+
+def test():
+    print(x)
+    x = 20
+
+test()
+
+
+This produces:
+
+UnboundLocalError
+
+
+WHY?
+
+Because Python sees:
+
+x = 20
+
+inside the function and therefore treats x as LOCAL.
+
+Then:
+
+print(x)
+
+tries to read the local x before it has a value.
+
+
+------------------------------------------------------------
+ANOTHER EXAMPLE
+------------------------------------------------------------
+
+salary = 80000
+
+def update_salary():
+    salary = salary + 5000
+    return salary
+
+update_salary()
+
+
+Result:
+
+UnboundLocalError
+
+
+Because the local salary has not been initialized.
+
+
+------------------------------------------------------------
+COMPARE WITH A PARAMETER
+------------------------------------------------------------
+
+def increase_salary(salary):
+    salary = salary + 5000
+    return salary
+
+salary = 80000
+
+new_salary = increase_salary(salary)
+
+print(salary)
+print(new_salary)
+
+
+Output:
+
+80000
+85000
+
+
+The parameter salary already has a value when the function starts.
+
+The function's local salary does NOT change the outside salary.
+
+
+============================================================
+6. RETURN VALUES
+============================================================
+
+return sends a VALUE back to the caller.
+
+Example:
+
+def create_employee():
+    name = "Naveen"
+    return name
+
+employee_name = create_employee()
+
+print(employee_name)
+
+Output:
+Naveen
+
+
+return does NOT make the local variable global.
+
+
+============================================================
+7. POSITIONAL ARGUMENTS
+============================================================
+
+Arguments are matched by POSITION.
+
+Example:
+
+def employee_info(name, salary, department):
+    print(name, salary, department)
+
+employee_info("Naveen", 100000, "Finance")
+
+
+Mapping:
+
+"Naveen"  → name
+100000     → salary
+"Finance"  → department
+
+
+Order matters.
+
+
+============================================================
+8. KEYWORD ARGUMENTS
+============================================================
+
+Arguments can be passed using parameter names.
+
+Example:
+
+employee_info(
+    name="Naveen",
+    salary=100000,
+    department="Finance"
+)
+
+
+Keyword arguments are matched by NAME.
+
+Therefore order does NOT matter:
+
+employee_info(
+    department="Finance",
+    name="Naveen",
+    salary=100000
+)
+
+This works.
+
+
+============================================================
+9. MIXING POSITIONAL + KEYWORD ARGUMENTS
+============================================================
+
+This is VALID:
+
+employee_info(
+    "Naveen",
+    salary=100000,
+    department="Technology"
+)
+
+
+RULE:
+
+Positional arguments must come BEFORE keyword arguments.
+
+
+VALID:
+
+function("Naveen", salary=100000)
+
+
+INVALID:
+
+function(name="Naveen", 100000)
+
+
+============================================================
+10. DEFAULT ARGUMENTS
+============================================================
+
+A parameter can have a default value.
+
+Example:
+
+def employee_info(name, department="Finance"):
+    print(name, department)
+
+
+employee_info("Naveen")
+
+Output:
+
+Naveen Finance
+
+
+If the argument isn't provided,
+Python uses the default.
+
+
+------------------------------------------------------------
+DEFAULT CAN BE OVERRIDDEN
+------------------------------------------------------------
+
+employee_info("Naveen", "Technology")
+
+Output:
+
+Naveen Technology
+
+
+Provided value overrides the default.
+
+
+------------------------------------------------------------
+REQUIRED PARAMETERS BEFORE DEFAULT PARAMETERS
+------------------------------------------------------------
+
+VALID:
+
+def employee_info(name, salary, department="Finance"):
+    pass
+
+
+INVALID:
+
+def employee_info(name, department="Finance", salary):
+    pass
+
+
+The second version produces:
+
+SyntaxError
+
+
+RULE:
+
+Required parameters
+        ↓
+Default parameters
+
+
+============================================================
+11. *args
+============================================================
+
+*args allows a function to accept
+a variable number of POSITIONAL arguments.
+
+
+Example:
+
+def show_salaries(*salaries):
+    print(salaries)
+
+show_salaries(50000, 75000, 100000)
+
+
+Output:
+
+(50000, 75000, 100000)
+
+
+IMPORTANT:
+
+*args is a TUPLE.
+
+
+Example:
+
+def total_salary(*salaries):
+    total = 0
+
+    for salary in salaries:
+        total += salary
+
+    return total
+
+
+total_salary(50000, 75000, 100000)
+
+Result:
+
+225000
+
+
+============================================================
+12. NORMAL PARAMETER + *args
+============================================================
+
+Example:
+
+def calculate_total_bonus(bonus_rate, *salaries):
+
+    total = 0
+
+    for salary in salaries:
+        total += salary * bonus_rate
+
+    return total
+
+
+calculate_total_bonus(
+    0.10,
+    50000,
+    75000,
+    100000
+)
+
+
+Mapping:
+
+bonus_rate → 0.10
+
+salaries → (50000, 75000, 100000)
+
+
+Result:
+
+22500
+
+
+============================================================
+13. *args WITH NO ARGUMENTS
+============================================================
+
+def show_salaries(*salaries):
+    print(salaries)
+
+show_salaries()
+
+
+Output:
+
+()
+
+
+An empty tuple.
+
+
+------------------------------------------------------------
+EDGE CASE
+------------------------------------------------------------
+
+def average_salary(*salaries):
+    return sum(salaries) / len(salaries)
+
+average_salary()
+
+
+This produces:
+
+ZeroDivisionError
+
+
+Because:
+
+len(salaries) = 0
+
+and Python tries:
+
+0 / 0
+
+
+Always consider the empty case when using *args.
+
+
+============================================================
+14. * IN FUNCTION CALL — UNPACKING
+============================================================
+
+Given:
+
+salaries = [50000, 75000, 100000]
+
+
+Without *:
+
+total_salary(salaries)
+
+
+The entire LIST becomes ONE argument.
+
+With *:
+
+total_salary(*salaries)
+
+
+The list is UNPACKED into separate arguments.
+
+Equivalent to:
+
+total_salary(50000, 75000, 100000)
+
+
+IMPORTANT:
+
+* in FUNCTION DEFINITION:
+
+def total_salary(*args):
+
+means:
+
+COLLECT positional arguments → tuple
+
+
+* in FUNCTION CALL:
+
+total_salary(*salaries)
+
+means:
+
+UNPACK list/tuple → individual positional arguments
+
+
+============================================================
+15. **kwargs
+============================================================
+
+**kwargs allows a function to accept
+a variable number of KEYWORD arguments.
+
+
+Example:
+
+def employee_info(**details):
+    print(details)
+
+
+employee_info(
+    name="Naveen",
+    salary=100000,
+    department="Finance"
+)
+
+
+details becomes:
+
+{
+    "name": "Naveen",
+    "salary": 100000,
+    "department": "Finance"
+}
+
+
+IMPORTANT:
+
+**kwargs is a DICTIONARY.
+
+
+============================================================
+16. USING **kwargs LIKE A DICTIONARY
+============================================================
+
+def employee_info(**details):
+
+    print(details["name"])
+    print(details["salary"])
+
+
+employee_info(
+    name="Naveen",
+    salary=100000,
+    department="Finance"
+)
+
+
+Output:
+
+Naveen
+100000
+
+
+Because details is a dictionary.
+
+
+------------------------------------------------------------
+LOOPING THROUGH **kwargs
+------------------------------------------------------------
+
+def print_employee(**details):
+
+    for key, value in details.items():
+        print(f"{key} -> {value}")
+
+
+This works because **kwargs is a dictionary.
+
+
+============================================================
+17. ** IN FUNCTION CALL — UNPACKING
+============================================================
+
+Given:
+
+employee = {
+    "name": "Naveen",
+    "salary": 100000,
+    "department": "Finance"
+}
+
+
+Calling:
+
+employee_info(**employee)
+
+
+is equivalent to:
+
+employee_info(
+    name="Naveen",
+    salary=100000,
+    department="Finance"
+)
+
+
+IMPORTANT:
+
+** in FUNCTION DEFINITION:
+
+def employee_info(**kwargs):
+
+means:
+
+COLLECT keyword arguments → dictionary
+
+
+** in FUNCTION CALL:
+
+employee_info(**employee)
+
+means:
+
+UNPACK dictionary → keyword arguments
+
+
+============================================================
+18. *args + **kwargs TOGETHER
+============================================================
+
+Example:
+
+def employee_info(*args, **kwargs):
+    print(args)
+    print(kwargs)
+
+
+employee_info(
+    "Naveen",
+    100000,
+    department="Finance",
+    country="USA"
+)
+
+
+Output:
+
+args:
+
+("Naveen", 100000)
+
+
+kwargs:
+
+{
+    "department": "Finance",
+    "country": "USA"
+}
+
+
+------------------------------------------------------------
+WHAT GOES WHERE?
+------------------------------------------------------------
+
+Positional arguments
+        ↓
+      *args
+        ↓
+      tuple
+
+
+Keyword arguments
+        ↓
+    **kwargs
+        ↓
+    dictionary
+
+
+============================================================
+19. PARAMETER ORDER
+============================================================
+
+Basic pattern:
+
+def employee_info(
+    normal_parameters,
+    *args,
+    **kwargs
+):
+    pass
+
+
+Example:
+
+def employee_info(name, salary=50000, *skills, **details):
+    pass
+
+
+Call:
+
+employee_info(
+    "Naveen",
+    100000,
+    "Python",
+    "Java",
+    department="Technology",
+    city="Dallas"
+)
+
+
+Result:
+
+name:
+
+"Naveen"
+
+
+salary:
+
+100000
+
+
+skills:
+
+("Python", "Java")
+
+
+details:
+
+{
+    "department": "Technology",
+    "city": "Dallas"
+}
+
+
+IMPORTANT:
+
+*skills is a TUPLE, not a list.
+
+
+============================================================
+20. MOST IMPORTANT CHEAT SHEET
+============================================================
+
+POSITIONAL ARGUMENTS:
+
+function("Naveen", 100000)
+
+
+KEYWORD ARGUMENTS:
+
+function(name="Naveen", salary=100000)
+
+
+DEFAULT:
+
+def function(name, department="Finance"):
+
+
+*args:
+
+def function(*args):
+
+Multiple positional arguments
+        ↓
+      tuple
+
+
+**kwargs:
+
+def function(**kwargs):
+
+Multiple keyword arguments
+        ↓
+      dictionary
+
+
+* UNPACKING:
+
+function(*my_list)
+
+List/Tuple
+    ↓
+individual positional arguments
+
+
+** UNPACKING:
+
+function(**my_dict)
+
+Dictionary
+    ↓
+individual keyword arguments
+
+
+============================================================
+21. COMMON MISTAKES TO REMEMBER
+============================================================
+
+MISTAKE 1:
+
+Thinking *args creates a list.
+
+WRONG:
+
+args → list
+
+CORRECT:
+
+args → tuple
+
+
+------------------------------------------------------------
+
+MISTAKE 2:
+
+Thinking **kwargs creates a tuple.
+
+WRONG:
+
+kwargs → tuple
+
+CORRECT:
+
+kwargs → dictionary
+
+
+------------------------------------------------------------
+
+MISTAKE 3:
+
+Putting required parameter after default parameter.
+
+WRONG:
+
+def test(name="Naveen", salary):
+    pass
+
+Result:
+
+SyntaxError
+
+
+------------------------------------------------------------
+
+MISTAKE 4:
+
+Putting positional argument after keyword argument.
+
+WRONG:
+
+function(name="Naveen", 100000)
+
+Positional arguments must come first.
+
+
+------------------------------------------------------------
+
+MISTAKE 5:
+
+Thinking another function can access
+the first function's local variable.
+
+Example:
+
+def first():
+    x = 20
+    second()
+
+def second():
+    print(x)
+
+
+second() cannot see first()'s local x.
+
+
+============================================================
+22. QUICK MEMORY RULES
+============================================================
+
+FUNCTION SCOPE:
+
+Local → Enclosing → Global → Built-in
+
+
+*args:
+
+"Many positional arguments"
+
+→ tuple
+
+
+**kwargs:
+
+"Many keyword arguments"
+
+→ dictionary
+
+
+* during CALL:
+
+"Unpack positional values"
+
+
+** during CALL:
+
+"Unpack keyword values"
+
+
+RETURN:
+
+"Send a value back to the caller"
+
+
+DEFAULT:
+
+"Use this value if caller doesn't provide one"
+
+
+============================================================
+END OF TODAY'S REVISION
+============================================================
+
+NEXT TOPIC:
+
+LIST COMPREHENSIONS
+DICTIONARY COMPREHENSIONS
+
+Learning approach:
+
+1. Minimal explanation
+2. You write the code
+3. I evaluate it
+4. Challenges gradually become harder
+5. Real-world examples
+6. No passive lecture unless needed
+
+============================================================
