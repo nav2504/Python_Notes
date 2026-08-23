@@ -1,0 +1,775 @@
+# Python Revision — Core Fundamentals Through Dictionary Comprehensions
+
+## 1. Variables
+
+```python
+name = "Naveen"
+salary = 100000
+age = 35
+is_active = True
+```
+
+---
+
+## 2. f-Strings
+
+```python
+name = "Naveen"
+salary = 100000
+
+message = f"{name} earns ${salary}"
+print(message)
+```
+
+### Expressions inside f-strings
+
+```python
+f"{salary * 1.10}"
+
+f"{name.upper()}"
+
+f"{employee['salary']}"
+
+f"{salary >= 100000}"
+
+f"{'High Earner' if salary >= 100000 else 'Standard'}"
+```
+
+### Number formatting
+
+```python
+salary = 100000
+
+f"${salary:,.2f}"
+# $100,000.00
+
+f"${salary * 1.10:.2f}"
+# $110000.00
+```
+
+### Key idea
+
+```python
+f"Some text {EXPRESSION} more text"
+```
+
+Anything inside `{}` must produce a value.
+
+---
+
+# 3. Lists
+
+```python
+skills = ["Python", "Java", "SQL"]
+
+skills[0]
+# Python
+
+skills[1]
+# Java
+```
+
+### Common operations
+
+```python
+skills.append("React")
+
+skills.remove("Java")
+
+len(skills)
+
+"Python" in skills
+```
+
+---
+
+# 4. Dictionaries
+
+```python
+employee = {
+    "name": "Naveen",
+    "salary": 100000,
+    "department": "Technology"
+}
+```
+
+### Access values
+
+```python
+employee["name"]
+employee["salary"]
+employee["department"]
+```
+
+### Nested data
+
+```python
+employee = {
+    "name": "Naveen",
+    "salary": 100000,
+    "skills": ["Python", "Java", "SQL"]
+}
+
+employee["skills"][0]
+# Python
+```
+
+Think:
+
+```text
+employee
+   ↓
+["skills"]
+   ↓
+[0]
+   ↓
+"Python"
+```
+
+---
+
+# 5. Dictionary Methods
+
+```python
+employee.keys()
+
+employee.values()
+
+employee.items()
+```
+
+### Loop through dictionary
+
+```python
+for key, value in employee.items():
+    print(key, value)
+```
+
+---
+
+# 6. enumerate()
+
+Useful when you need both the index and value.
+
+```python
+skills = ["Python", "Java", "SQL"]
+
+for index, skill in enumerate(skills):
+    print(index, skill)
+```
+
+Result:
+
+```text
+0 Python
+1 Java
+2 SQL
+```
+
+---
+
+# 7. Conditions
+
+```python
+if salary > 100000:
+    print("High")
+
+elif salary == 100000:
+    print("Exactly 100K")
+
+else:
+    print("Below 100K")
+```
+
+### Comparison operators
+
+```python
+>       # greater than
+>=      # greater than or equal
+<       # less than
+<=      # less than or equal
+==      # equal
+!=      # not equal
+```
+
+### Logical operators
+
+```python
+and
+or
+not
+```
+
+---
+
+# 8. Membership Operators
+
+```python
+"Python" in skills
+
+"Java" not in skills
+```
+
+With multiple allowed values:
+
+```python
+employee["department"] in ("Finance", "Technology")
+```
+
+---
+
+# 9. Chained Comparisons
+
+Very useful for ranges.
+
+```python
+90000 <= salary <= 120000
+```
+
+Means:
+
+```text
+salary >= 90000
+AND
+salary <= 120000
+```
+
+Remember:
+
+```python
+90000 <= salary <= 120000
+```
+
+NOT:
+
+```python
+120000 <= salary >= 90000
+```
+
+---
+
+# 10. Normal for Loop
+
+```python
+squares = []
+
+for number in numbers:
+    squares.append(number * number)
+```
+
+Use a normal loop when you have multiple steps, side effects, logging, error handling, function calls, etc.
+
+---
+
+# 11. List Comprehensions
+
+Basic structure:
+
+```python
+[expression for item in collection]
+```
+
+Example:
+
+```python
+numbers = [1, 2, 3, 4, 5]
+
+squares = [
+    number * number
+    for number in numbers
+]
+```
+
+Result:
+
+```python
+[1, 4, 9, 16, 25]
+```
+
+---
+
+## List Comprehension with Filter
+
+```python
+high_salary = [
+    employee["name"]
+    for employee in employees
+    if employee["salary"] >= 100000
+]
+```
+
+Pattern:
+
+```python
+[WHAT_TO_CREATE for ITEM in COLLECTION if CONDITION]
+```
+
+---
+
+## Multiple Conditions
+
+```python
+[
+    employee["name"]
+    for employee in employees
+    if employee["department"] in ("Finance", "Technology")
+    and employee["salary"] > 100000
+]
+```
+
+---
+
+## Transforming Values
+
+```python
+[
+    employee["name"].upper()
+    for employee in employees
+    if employee["salary"] >= 100000
+]
+```
+
+---
+
+## f-String Inside List Comprehension
+
+```python
+[
+    f"{employee['name']} works in {employee['department']} and earns ${employee['salary']}"
+    for employee in employees
+    if employee["department"] == "Finance"
+    and employee["salary"] > 95000
+]
+```
+
+---
+
+## Calculations Inside List Comprehension
+
+```python
+[
+    employee["salary"] * 1.10
+    for employee in employees
+    if employee["salary"] >= 100000
+]
+```
+
+---
+
+# 12. Dictionary Comprehensions
+
+Basic structure:
+
+```python
+{key: value for item in collection}
+```
+
+Example:
+
+```python
+numbers = [1, 2, 3, 4, 5]
+
+squares = {
+    number: number * number
+    for number in numbers
+}
+```
+
+Result:
+
+```python
+{
+    1: 1,
+    2: 4,
+    3: 9,
+    4: 16,
+    5: 25
+}
+```
+
+---
+
+## Dictionary Comprehension with Filter
+
+```python
+{
+    employee["name"]: employee["salary"]
+    for employee in employees
+    if employee["salary"] >= 100000
+}
+```
+
+---
+
+## Transforming Key and Value
+
+```python
+{
+    employee["name"].upper(): employee["department"].upper()
+    for employee in employees
+    if employee["salary"] >= 100000
+}
+```
+
+---
+
+## Calculating the Value
+
+```python
+{
+    employee["name"]: employee["salary"] * 1.15
+    for employee in employees
+    if employee["salary"] < 120000
+}
+```
+
+---
+
+## Multiple Conditions
+
+```python
+{
+    employee["name"].upper(): employee["salary"] * 1.10
+    for employee in employees
+    if employee["department"] != "HR"
+    and 90000 <= employee["salary"] <= 120000
+}
+```
+
+---
+
+# 13. Conditional Expressions
+
+A conditional expression has this form:
+
+```python
+VALUE_IF_TRUE if CONDITION else VALUE_IF_FALSE
+```
+
+Example:
+
+```python
+status = "High Earner" if salary >= 100000 else "Standard"
+```
+
+---
+
+## Conditional Expression in Dictionary Comprehension
+
+```python
+{
+    employee["name"]:
+        "High Earner"
+        if employee["salary"] >= 100000
+        else "Standard"
+    for employee in employees
+}
+```
+
+Important distinction:
+
+### Filter
+
+Employee is removed:
+
+```python
+{
+    employee["name"]: employee["salary"]
+    for employee in employees
+    if employee["salary"] >= 100000
+}
+```
+
+### Conditional value
+
+Employee remains, but the value changes:
+
+```python
+{
+    employee["name"]:
+        "High Earner"
+        if employee["salary"] >= 100000
+        else "Standard"
+    for employee in employees
+}
+```
+
+---
+
+# 14. Nested Data
+
+Example:
+
+```python
+employees = [
+    {
+        "name": "Naveen",
+        "department": "Finance",
+        "salary": 100000,
+        "skills": ["Python", "Java", "SQL"]
+    },
+    {
+        "name": "Sarah",
+        "department": "Finance",
+        "salary": 120000,
+        "skills": ["Python", "SQL", "React"]
+    }
+]
+```
+
+Access nested list:
+
+```python
+employee["skills"][0]
+```
+
+Access number of skills:
+
+```python
+len(employee["skills"])
+```
+
+---
+
+## Dictionary Comprehension with Nested Data
+
+```python
+{
+    employee["name"]: len(employee["skills"])
+    for employee in employees
+    if len(employee["skills"]) >= 2
+}
+```
+
+---
+
+## Extract First Skill
+
+```python
+{
+    employee["name"]: employee["skills"][0]
+    for employee in employees
+    if employee["department"] == "Finance"
+}
+```
+
+---
+
+## Nested Data + Multiple Conditions
+
+```python
+{
+    employee["name"].upper(): len(employee["skills"])
+    for employee in employees
+    if len(employee["skills"]) > 2
+    and employee["department"] in ("Finance", "Technology")
+}
+```
+
+---
+
+## Nested Data + Conditional Value
+
+```python
+{
+    employee["name"]:
+        "Python Developer"
+        if "Python" in employee["skills"]
+        else "Other"
+    for employee in employees
+    if employee["salary"] >= 100000
+}
+```
+
+---
+
+# 15. Dictionary Key Uniqueness
+
+Dictionary keys must be unique.
+
+```python
+{
+    "Finance": "Naveen",
+    "Finance": "Sarah"
+}
+```
+
+Results in:
+
+```python
+{
+    "Finance": "Sarah"
+}
+```
+
+The second value replaces the first.
+
+But duplicate values are completely fine:
+
+```python
+{
+    "Naveen": "Finance",
+    "Sarah": "Finance",
+    "Lisa": "Finance"
+}
+```
+
+Here the keys are unique.
+
+---
+
+# 16. When to Use Comprehensions
+
+### Good use
+
+```python
+high_value = [
+    transaction["amount"]
+    for transaction in transactions
+    if transaction["amount"] > 5000
+]
+```
+
+Think:
+
+```text
+Collection
+    ↓
+Filter / Transform
+    ↓
+New Collection
+```
+
+### Use a normal loop when there are multiple actions
+
+```python
+for transaction in transactions:
+
+    if not transaction["matched"]:
+        log_issue(transaction)
+        send_alert(transaction)
+        create_ticket(transaction)
+```
+
+**Don't use comprehensions simply because they are shorter.**
+
+Readability matters.
+
+---
+
+# 17. Core Comprehension Patterns
+
+### List
+
+```python
+[value for item in collection]
+```
+
+### List + condition
+
+```python
+[value for item in collection if condition]
+```
+
+### Dictionary
+
+```python
+{key: value for item in collection}
+```
+
+### Dictionary + condition
+
+```python
+{key: value for item in collection if condition}
+```
+
+### Dictionary + conditional value
+
+```python
+{
+    key: value_if_true if condition else value_if_false
+    for item in collection
+}
+```
+
+---
+
+# 18. Key Mental Model
+
+When you see:
+
+```python
+[
+    expression
+    for item in collection
+    if condition
+]
+```
+
+read it as:
+
+> "For every item in this collection, if the condition is true, create this expression and put it into a list."
+
+When you see:
+
+```python
+{
+    key: value
+    for item in collection
+    if condition
+}
+```
+
+read it as:
+
+> "For every item in this collection, if the condition is true, create this key-value pair and put it into a dictionary."
+
+---
+
+# Current Progress
+
+Completed:
+
+* Variables
+* Data types
+* Strings
+* f-strings
+* Conditions
+* Loops
+* Lists
+* Tuples
+* Sets
+* Dictionaries
+* Functions
+* Function scope
+* enumerate()
+* Dictionary `.items()`
+* List comprehensions
+* Dictionary comprehensions
+* Nested data
+* Conditional expressions
+* f-string formatting
+
+## Next Topic
+
+**Set Comprehensions**
+
+Basic pattern:
+
+```python
+{expression for item in collection}
+```
+
+The major difference:
+
+```python
+[expression for item in collection]
+```
+
+creates a **list**.
+
+```python
+{expression for item in collection}
+```
+
+creates a **set**, so duplicate values are automatically removed.
