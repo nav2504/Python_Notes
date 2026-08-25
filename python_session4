@@ -1,0 +1,788 @@
+# ============================================================
+# PYTHON REVISION — FROM LAST REVISION POINT
+# ============================================================
+
+
+# ============================================================
+# 1. *args
+# ============================================================
+# *args allows a function to accept any number of
+# positional arguments.
+#
+# Inside the function, args is a TUPLE.
+
+def calculate_total(*args):
+    total = 0
+
+    for number in args:
+        total += number
+
+    return total
+
+
+calculate_total(10, 20, 30)
+# 60
+
+
+# Example: calculate only even numbers
+
+def calculate_even_total(*args):
+    total = 0
+
+    for number in args:
+        if number % 2 == 0:
+            total += number
+
+    return total
+
+
+calculate_even_total(10, 15, 20, 25, 30)
+# 60
+
+
+# ============================================================
+# 2. *args + String Processing
+# ============================================================
+
+def combine_names(*args):
+    uppercase_names = []
+
+    for name in args:
+        uppercase_names.append(name.upper())
+
+    result = ", ".join(uppercase_names)
+
+    return result
+
+
+combine_names("naveen", "sarah", "john")
+# "NAVEEN, SARAH, JOHN"
+
+
+# ============================================================
+# 3. isinstance()
+# ============================================================
+# Used to check the type of a value.
+
+isinstance(100, int)
+# True
+
+isinstance(10.5, float)
+# True
+
+isinstance("Python", str)
+# True
+
+
+# Example
+
+def calculate_numeric_total(*args):
+    total = 0
+
+    for number in args:
+        if isinstance(number, int) or isinstance(number, float):
+            total += number
+
+    return total
+
+
+calculate_numeric_total(10, 20.5, "Python", 30)
+# 60.5
+
+
+# ============================================================
+# 4. **kwargs
+# ============================================================
+# **kwargs allows a function to accept any number of
+# keyword arguments.
+#
+# Inside the function, kwargs is a DICTIONARY.
+
+def display_employee(**kwargs):
+
+    for key, value in kwargs.items():
+        print(f"{key} : {value}")
+
+
+display_employee(
+    name="Naveen",
+    department="Technology",
+    salary=100000
+)
+
+
+# ============================================================
+# 5. **kwargs + Filtering
+# ============================================================
+
+def display_high_values(**kwargs):
+    new_dict = {}
+
+    for key, value in kwargs.items():
+
+        if isinstance(value, int) and value > 100:
+            new_dict[key] = value
+
+    return new_dict
+
+
+display_high_values(
+    salary=120000,
+    bonus=5000,
+    age=35,
+    experience=12
+)
+
+# {
+#     "salary": 120000,
+#     "bonus": 5000
+# }
+
+
+# ============================================================
+# 6. **kwargs + Conditional Transformation
+# ============================================================
+
+def process_employee(**kwargs):
+    new_dict = {}
+
+    for key, value in kwargs.items():
+
+        if key == "salary":
+            bonus = value * 0.10
+            new_dict[key] = value + bonus
+
+        elif key in ("department", "name"):
+            new_dict[key] = value.upper()
+
+        else:
+            new_dict[key] = value
+
+    return new_dict
+
+
+process_employee(
+    name="Naveen",
+    department="Technology",
+    salary=100000,
+    experience=15,
+    location="Dallas"
+)
+
+# {
+#     "name": "NAVEEN",
+#     "department": "TECHNOLOGY",
+#     "salary": 110000.0,
+#     "experience": 15,
+#     "location": "Dallas"
+# }
+
+
+# ============================================================
+# 7. *args + **kwargs TOGETHER
+# ============================================================
+
+def employee_report(*args, **kwargs):
+
+    new_list = []
+    new_dict = {}
+
+    # *args → skills
+    for skill in args:
+        new_list.append(skill.upper())
+
+    # **kwargs → employee information
+    for key, value in kwargs.items():
+
+        if key in ("department", "name"):
+            new_dict[key] = value.upper()
+
+        else:
+            new_dict[key] = value
+
+    new_dict["skills"] = new_list
+
+    return new_dict
+
+
+employee_report(
+    "Python",
+    "Java",
+    "SQL",
+    name="Naveen",
+    department="Technology",
+    salary=100000
+)
+
+# {
+#     "name": "NAVEEN",
+#     "department": "TECHNOLOGY",
+#     "salary": 100000,
+#     "skills": ["PYTHON", "JAVA", "SQL"]
+# }
+
+
+# ============================================================
+# 8. HARDER *args + **kwargs EXAMPLE
+# ============================================================
+
+def build_employee_profile(*args, **kwargs):
+
+    new_list = []
+    new_dict = {}
+
+    # Keep skills with at least 4 characters
+    for skill in args:
+
+        if len(skill) >= 4:
+            new_list.append(skill.upper())
+
+    # Process employee information
+    for key, value in kwargs.items():
+
+        if key in ("name", "department"):
+            new_dict[key] = value.upper()
+
+        elif key == "salary":
+            bonus = value * 0.10
+            new_dict[key] = value + bonus
+
+        else:
+            new_dict[key] = value
+
+    new_dict["skills"] = new_list
+
+    return new_dict
+
+
+build_employee_profile(
+    "Python",
+    "SQL",
+    "Java",
+    "React",
+    "Go",
+    name="Naveen",
+    department="Technology",
+    salary=100000,
+    active=True,
+    location="Dallas"
+)
+
+# {
+#     "name": "NAVEEN",
+#     "department": "TECHNOLOGY",
+#     "salary": 110000.0,
+#     "active": True,
+#     "location": "Dallas",
+#     "skills": ["PYTHON", "JAVA", "REACT"]
+# }
+
+
+# ============================================================
+# 9. CALLING *args AND **kwargs TOGETHER
+# ============================================================
+
+def employee_report(*args, **kwargs):
+    pass
+
+
+employee_report(
+    "Python",
+    "Java",
+    "SQL",
+    name="Naveen",
+    department="Technology",
+    salary=100000
+)
+
+# Positional arguments → *args
+#
+# args:
+# ("Python", "Java", "SQL")
+#
+# Keyword arguments → **kwargs
+#
+# kwargs:
+# {
+#     "name": "Naveen",
+#     "department": "Technology",
+#     "salary": 100000
+# }
+
+
+# IMPORTANT:
+#
+# Positional arguments must come BEFORE keyword arguments.
+
+
+# ============================================================
+# 10. LAMBDA FUNCTIONS
+# ============================================================
+# Lambda = small anonymous function
+#
+# Syntax:
+#
+# lambda parameters: expression
+
+
+def square(number):
+    return number * number
+
+
+square(5)
+# 25
+
+
+# Same using lambda:
+
+square = lambda number: number * number
+
+square(5)
+# 25
+
+
+# Two parameters:
+
+multiply = lambda number1, number2: number1 * number2
+
+multiply(5, 10)
+# 50
+
+
+# ============================================================
+# 11. LAMBDA + CONDITION
+# ============================================================
+
+is_even = lambda number: number % 2 == 0
+
+is_even(10)
+# True
+
+is_even(7)
+# False
+
+
+# Conditional expression is also possible:
+
+is_even = lambda number: True if number % 2 == 0 else False
+
+
+# But the shorter version is more Pythonic:
+
+is_even = lambda number: number % 2 == 0
+
+
+# ============================================================
+# 12. LAMBDA + len()
+# ============================================================
+
+get_length = lambda item: len(item)
+
+get_length("Python")
+# 6
+
+
+# ============================================================
+# 13. map()
+# ============================================================
+# map() TRANSFORMS every item.
+#
+# General pattern:
+#
+# list(map(lambda item: transformation, collection))
+
+
+numbers = [1, 2, 3, 4, 5]
+
+doubled = list(
+    map(
+        lambda number: number * 2,
+        numbers
+    )
+)
+
+# [2, 4, 6, 8, 10]
+
+
+# Square every number:
+
+numbers = [10, 20, 30, 40, 50]
+
+squared = list(
+    map(
+        lambda number: number * number,
+        numbers
+    )
+)
+
+# [100, 400, 900, 1600, 2500]
+
+
+# ============================================================
+# 14. map() + STRINGS
+# ============================================================
+
+names = ["Naveen", "Sarah", "John", "Lisa"]
+
+upper_names = list(
+    map(
+        lambda name: name.upper(),
+        names
+    )
+)
+
+# ["NAVEEN", "SARAH", "JOHN", "LISA"]
+
+
+# ============================================================
+# 15. map() + DICTIONARIES
+# ============================================================
+
+employees = [
+    {"name": "Naveen", "salary": 100000},
+    {"name": "Sarah", "salary": 120000},
+    {"name": "John", "salary": 90000},
+    {"name": "Lisa", "salary": 110000}
+]
+
+
+employee_names = list(
+    map(
+        lambda employee: employee["name"].upper(),
+        employees
+    )
+)
+
+# ["NAVEEN", "SARAH", "JOHN", "LISA"]
+
+
+# ============================================================
+# 16. map() + CALCULATION
+# ============================================================
+
+employee_new_salary = list(
+    map(
+        lambda employee:
+            employee["salary"] +
+            (employee["salary"] * 0.10),
+        employees
+    )
+)
+
+# [110000.0, 132000.0, 99000.0, 121000.0]
+
+
+# ============================================================
+# 17. filter()
+# ============================================================
+# filter() SELECTS items.
+#
+# General pattern:
+#
+# list(filter(lambda item: condition, collection))
+
+
+numbers = [10, 15, 20, 25, 30, 35, 40]
+
+even_numbers = list(
+    filter(
+        lambda number: number % 2 == 0,
+        numbers
+    )
+)
+
+# [10, 20, 30, 40]
+
+
+# ============================================================
+# 18. filter() + DICTIONARIES
+# ============================================================
+
+employees = [
+    {"name": "Naveen", "department": "Technology", "salary": 100000},
+    {"name": "Sarah", "department": "Finance", "salary": 120000},
+    {"name": "John", "department": "Technology", "salary": 90000},
+    {"name": "Lisa", "department": "HR", "salary": 110000}
+]
+
+
+high_earners = list(
+    filter(
+        lambda employee: employee["salary"] >= 100000,
+        employees
+    )
+)
+
+
+# ============================================================
+# 19. filter() + MULTIPLE CONDITIONS
+# ============================================================
+
+tech_high_earners = list(
+    filter(
+        lambda employee:
+            employee["salary"] >= 100000
+            and employee["department"] == "Technology",
+        employees
+    )
+)
+
+
+# ============================================================
+# 20. map() + filter() TOGETHER
+# ============================================================
+# FILTER first → MAP second
+#
+# Filter qualifying employees
+# Then transform them.
+
+
+tech_names = list(
+    map(
+        lambda employee: employee["name"].upper(),
+
+        filter(
+            lambda employee:
+                employee["salary"] >= 100000
+                and employee["department"] == "Technology",
+
+            employees
+        )
+    )
+)
+
+# ["NAVEEN"]
+
+
+# ============================================================
+# 21. filter() + map() + CALCULATION
+# ============================================================
+
+tech_salary_after_raise = list(
+    map(
+        lambda employee:
+            employee["salary"] +
+            (employee["salary"] * 0.10),
+
+        filter(
+            lambda employee:
+                employee["department"] == "Technology"
+                and employee["salary"] >= 90000,
+
+            employees
+        )
+    )
+)
+
+# [110000.0, 99000.0]
+
+
+# ============================================================
+# 22. sorted()
+# ============================================================
+# sorted() returns a NEW sorted list.
+#
+# Ascending order:
+
+numbers = [40, 10, 30, 20, 50]
+
+sorted(numbers)
+
+# [10, 20, 30, 40, 50]
+
+
+# Descending:
+
+sorted(numbers, reverse=True)
+
+# [50, 40, 30, 20, 10]
+
+
+# ============================================================
+# 23. sorted() + key + lambda
+# ============================================================
+
+employees_by_salary = sorted(
+    employees,
+    key=lambda employee: employee["salary"]
+)
+
+
+# Highest salary first:
+
+employees_by_salary = sorted(
+    employees,
+    key=lambda employee: employee["salary"],
+    reverse=True
+)
+
+
+# ============================================================
+# 24. map() vs filter() vs sorted()
+# ============================================================
+
+# map()
+# → TRANSFORM
+
+list(map(lambda x: x * 2, numbers))
+
+
+# filter()
+# → SELECT / KEEP
+
+list(filter(lambda x: x % 2 == 0, numbers))
+
+
+# sorted()
+# → ORDER
+
+sorted(numbers)
+
+
+# Easy memory trick:
+#
+# map    = MODIFY
+# filter = FIND / KEEP
+# sorted = ORDER
+
+
+# ============================================================
+# 25. COMBINING sorted() + filter() + map()
+# ============================================================
+
+top_earners = list(
+    map(
+        lambda employee: employee["name"].upper(),
+
+        filter(
+            lambda employee:
+                employee["salary"] >= 100000,
+
+            sorted(
+                employees,
+                key=lambda employee: employee["salary"],
+                reverse=True
+            )
+        )
+    )
+)
+
+# ["SARAH", "LISA", "NAVEEN"]
+
+
+# ============================================================
+# 26. IMPORTANT: READ COMPLEX EXPRESSIONS INSIDE → OUT
+# ============================================================
+
+# Example:
+
+list(
+    map(
+        lambda employee: employee["name"].upper(),
+
+        filter(
+            lambda employee: employee["salary"] >= 100000,
+
+            sorted(
+                employees,
+                key=lambda employee: employee["salary"],
+                reverse=True
+            )
+        )
+    )
+)
+
+
+# Read it:
+#
+# 1. sorted()
+#       ↓
+#    sort employees
+#
+# 2. filter()
+#       ↓
+#    keep salary >= 100000
+#
+# 3. map()
+#       ↓
+#    extract + uppercase name
+#
+# 4. list()
+#       ↓
+#    create final list
+
+
+# ============================================================
+# QUICK REFERENCE
+# ============================================================
+
+# *args
+# positional arguments → TUPLE
+
+def function(*args):
+    pass
+
+
+# **kwargs
+# keyword arguments → DICTIONARY
+
+def function(**kwargs):
+    pass
+
+
+# Both:
+
+def function(*args, **kwargs):
+    pass
+
+
+# lambda
+
+lambda x: expression
+
+
+# map
+
+list(map(lambda x: transformation, collection))
+
+
+# filter
+
+list(filter(lambda x: condition, collection))
+
+
+# sorted
+
+sorted(collection, key=lambda x: sorting_value)
+
+
+# sorted descending
+
+sorted(
+    collection,
+    key=lambda x: sorting_value,
+    reverse=True
+)
+
+
+# ============================================================
+# CORE MENTAL MODEL
+# ============================================================
+
+# map()
+# "Change every item."
+#
+# filter()
+# "Keep only the items I want."
+#
+# sorted()
+# "Put the items in the order I want."
+#
+# lambda
+# "Give me a small function right here."
+#
+# *args
+# "Accept any number of positional arguments."
+#
+# **kwargs
+# "Accept any number of keyword arguments."
