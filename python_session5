@@ -1,0 +1,554 @@
+# ============================================================
+# PYTHON REVISION — MODULES & STANDARD LIBRARY
+# ============================================================
+
+
+# ============================================================
+# 1. MODULES
+# ============================================================
+
+# A module is a Python file (.py) containing reusable code.
+
+# Example:
+# employee_utils.py
+
+def calculate_bonus(salary):
+    return salary * 0.10
+
+
+# Another Python file can import the function:
+
+from employee_utils import calculate_bonus
+
+bonus = calculate_bonus(100000)
+
+
+# ============================================================
+# 2. IMPORTING AN ENTIRE MODULE
+# ============================================================
+
+import employee_utils
+
+employee_utils.calculate_bonus(100000)
+
+
+# Module name is used to access its functions:
+# module_name.function_name()
+
+
+# ============================================================
+# 3. IMPORTING SPECIFIC FUNCTIONS
+# ============================================================
+
+from employee_utils import calculate_bonus, calculate_tax
+
+bonus = calculate_bonus(100000)
+tax = calculate_tax(100000)
+
+
+# ============================================================
+# 4. MODULE ALIAS
+# ============================================================
+
+import math as m
+
+result = m.pow(2, 5)
+
+# m is now an alias for math
+
+
+# ============================================================
+# 5. FUNCTION ALIAS
+# ============================================================
+
+from employee_utils import calculate_bonus as bonus
+
+result = bonus(100000)
+
+# calculate_bonus is now available locally as bonus
+
+
+# ============================================================
+# 6. CUSTOM MODULE EXAMPLE
+# ============================================================
+
+# employee_utils.py
+
+def calculate_bonus(salary):
+    return salary * 0.10
+
+def calculate_tax(salary):
+    return salary * 0.20
+
+
+# main.py
+
+import employee_utils
+
+def calculate_take_home_salary(salary):
+    bonus = employee_utils.calculate_bonus(salary)
+    tax = employee_utils.calculate_tax(salary)
+
+    gross_salary = salary + bonus
+    take_home = gross_salary - tax
+
+    return take_home
+
+
+# ============================================================
+# 7. math MODULE
+# ============================================================
+
+import math
+
+math.sqrt(25)       # 5.0
+math.ceil(25.3)     # 26
+math.pow(2, 5)      # 32.0
+
+
+# Import specific functions:
+
+from math import sqrt, ceil
+
+sqrt(25)
+ceil(25.3)
+
+
+# ============================================================
+# 8. datetime MODULE
+# ============================================================
+
+from datetime import datetime
+
+now = datetime.now()
+
+now.year
+now.month
+now.day
+
+
+# Current date:
+
+def get_current_date():
+    now = datetime.now()
+
+    return {
+        "year": now.year,
+        "month": now.month,
+        "day": now.day
+    }
+
+
+# ============================================================
+# 9. datetime FORMATTING
+# ============================================================
+
+now = datetime.now()
+
+now.strftime("%Y-%m-%d")
+
+# Example:
+# "2026-08-31"
+
+
+# Date + time:
+
+now.strftime("%Y-%m-%d %H:%M:%S")
+
+# Example:
+# "2026-08-31 10:30:45"
+
+
+# Important format codes:
+
+# %Y → 4-digit year
+# %m → 2-digit month
+# %d → day
+# %H → hour (24-hour)
+# %M → minute
+# %S → second
+
+
+# ============================================================
+# 10. random MODULE
+# ============================================================
+
+import random
+
+
+# Random integer INCLUDING both boundaries:
+
+random.randint(1000, 9999)
+
+
+# Randomly select ONE item:
+
+departments = ["Technology", "Finance", "HR", "Marketing"]
+
+random.choice(departments)
+
+
+# Randomly select MULTIPLE UNIQUE items:
+
+random.sample(departments, 2)
+
+
+# Difference:
+
+# randint()  → random number
+# choice()   → one random item
+# sample()   → multiple unique items
+
+
+# ============================================================
+# 11. os MODULE
+# ============================================================
+
+import os
+
+
+# Current working directory:
+
+os.getcwd()
+
+
+# List files/folders in a directory:
+
+os.listdir()
+
+
+# Check whether a path exists:
+
+os.path.exists("employee_utils.py")
+
+
+# Check whether path is a file:
+
+os.path.isfile("employee_utils.py")
+
+
+# Check whether path is a directory:
+
+os.path.isdir("employees")
+
+
+# Build a path:
+
+os.path.join("employees", "data.csv")
+
+
+# ============================================================
+# 12. Combining os.path Functions
+# ============================================================
+
+import os
+
+def check_file_in_folder(folder, filename):
+    path = os.path.join(folder, filename)
+
+    return os.path.exists(path)
+
+
+# ============================================================
+# 13. FILE vs DIRECTORY
+# ============================================================
+
+import os
+
+def identify_path(path):
+
+    if os.path.isfile(path):
+        return "File"
+
+    elif os.path.isdir(path):
+        return "Directory"
+
+    else:
+        return "Does not exist"
+
+
+# ============================================================
+# 14. sys MODULE
+# ============================================================
+
+import sys
+
+sys.argv
+
+
+# sys.argv contains command-line arguments.
+
+# Example command:
+
+# python main.py Naveen 35
+
+
+# sys.argv conceptually becomes:
+
+# ["main.py", "Naveen", "35"]
+
+
+# Important:
+
+# sys.argv[0] → script name
+# sys.argv[1] → first argument
+# sys.argv[2] → second argument
+
+
+# ============================================================
+# 15. ACCESSING COMMAND-LINE ARGUMENTS
+# ============================================================
+
+import sys
+
+def get_first_argument():
+    return sys.argv[1]
+
+
+# ============================================================
+# 16. sys.argv + TYPE CONVERSION
+# ============================================================
+
+import sys
+
+def get_user_details():
+    return {
+        "name": sys.argv[1],
+        "age": int(sys.argv[2])
+    }
+
+
+# Remember:
+# sys.argv values are STRINGS.
+
+# Example:
+# sys.argv[2] → "35"
+
+# Convert:
+# int(sys.argv[2]) → 35
+
+
+# ============================================================
+# 17. sys.argv + EXCEPTION HANDLING
+# ============================================================
+
+import sys
+
+def get_user_details():
+
+    try:
+        age = int(sys.argv[2])
+        name = sys.argv[1]
+
+        return {
+            "name": name,
+            "age": age
+        }
+
+    except IndexError:
+        return "Name and age are required"
+
+    except ValueError:
+        return "Age must be a number"
+
+
+# ============================================================
+# 18. COMBINING MODULES + CALCULATIONS + EXCEPTIONS
+# ============================================================
+
+import sys
+
+def process_employee():
+
+    try:
+        name = sys.argv[1]
+        salary = float(sys.argv[2])
+
+        final_salary = salary * 1.10
+
+        return {
+            "name": name,
+            "salary": final_salary
+        }
+
+    except IndexError:
+        return "Name and salary are required"
+
+    except ValueError:
+        return "Salary must be a number"
+
+
+# ============================================================
+# 19. IMPORTANT IMPORT PATTERNS
+# ============================================================
+
+import math
+
+math.sqrt(25)
+
+
+from math import sqrt
+
+sqrt(25)
+
+
+import math as m
+
+m.sqrt(25)
+
+
+from math import sqrt as square_root
+
+square_root(25)
+
+
+# ============================================================
+# 20. KEY CONCEPT — CODE REUSE
+# ============================================================
+
+# Instead of putting everything in one huge file:
+
+# main.py
+# employee logic
+# salary logic
+# tax logic
+# reporting logic
+# etc.
+
+
+# We can separate responsibilities:
+
+# project/
+#
+#     main.py
+#     employee_utils.py
+#     salary_utils.py
+#     reports.py
+
+
+# Then import the required functions/modules.
+
+
+# ============================================================
+# 21. CONCEPTS YOU SHOULD BE ABLE TO EXPLAIN
+# ============================================================
+
+# What is a module?
+# → A Python file containing reusable code.
+
+# Why use modules?
+# → Code organization, reuse, and maintainability.
+
+# import math
+# → Import the entire math module.
+
+# from math import sqrt
+# → Import only sqrt.
+
+# import math as m
+# → Give math a shorter local name.
+
+# sys.argv
+# → Command-line arguments.
+
+# sys.argv[0]
+# → Script name.
+
+# sys.argv[1]
+# → First user-provided argument.
+
+# Why convert sys.argv values?
+# → Because command-line arguments are strings.
+
+# os.getcwd()
+# → Current working directory.
+
+# os.listdir()
+# → Directory contents.
+
+# os.path.exists()
+# → Whether a path exists.
+
+# os.path.isfile()
+# → Whether a path is a file.
+
+# os.path.isdir()
+# → Whether a path is a directory.
+
+# os.path.join()
+# → Safely build a file/path string.
+
+
+# ============================================================
+# CURRENT LEARNING STATUS
+# ============================================================
+
+# CORE PYTHON
+# ✅ Variables
+# ✅ Data types
+# ✅ if / elif / else
+# ✅ for loops
+# ✅ while loops
+# ✅ Lists
+# ✅ Dictionaries
+# ✅ Functions
+# ✅ *args
+# ✅ **kwargs
+# ✅ enumerate()
+# ✅ items()
+# ✅ List comprehensions
+# ✅ Dictionary comprehensions
+# ✅ lambda
+# ✅ map()
+# ✅ filter()
+# ✅ sorted()
+
+
+# EXCEPTION HANDLING
+# ✅ try
+# ✅ except
+# ✅ Multiple except blocks
+# ✅ ValueError
+# ✅ TypeError
+# ✅ KeyError
+# ✅ IndexError
+# ✅ AttributeError
+# ✅ else
+# ✅ finally
+# ✅ raise
+# ✅ Multiple try blocks
+# ✅ Nested try/except
+
+
+# MODULES & STANDARD LIBRARY
+# ✅ import
+# ✅ from ... import
+# ✅ Module aliases
+# ✅ Function aliases
+# ✅ Custom modules
+# ✅ math
+# ✅ datetime
+# ✅ random
+# ✅ os
+# ✅ sys
+# ✅ sys.argv
+
+
+# ============================================================
+# NEXT TOPIC
+# ============================================================
+
+# JSON MODULE
+#
+# Python dictionary/list
+#        ↓
+#       JSON
+#        ↓
+# APIs / files / configuration / data exchange
+#
+# Next we will learn:
+#
+# json.dumps()
+# json.loads()
+# json.dump()
+# json.load()
