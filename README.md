@@ -1,6 +1,6 @@
 # Python_Notes
-Pythons notes , has all revision notes of all topics covered.\n
-1)Uploaded Session 1 covered topics - Core fundamentals (Variables, conditions, loops, lists, dictionaries, comprehensions)\n
+Pythons notes , has all revision notes of all topics covered.
+1)Uploaded Session 1 covered topics - Core fundamentals (Variables, conditions, loops, lists, dictionaries, comprehensions)
 2)Uploaded Session 2 covered topics - FUNCTIONS Scope + Function Arguments
 3)Uploaded Session 3 covered topics - Core Fundamentals Through Dictionary Comprehensions
 4)Uploaded Session 4 covered topics - Functional tools( *args, **kwargs, lambda, map(), filter(), sorted() ) 
