@@ -1,0 +1,530 @@
+# ============================================================
+# PYTHON REVISION — EMPLOYEE DATA PROCESSING
+# Challenges 65–81
+# ============================================================
+
+
+# ------------------------------------------------------------
+# Challenge 65 — Find Employee by Name
+# ------------------------------------------------------------
+
+def find_employee(employees, name):
+    for employee in employees:
+        if "name" not in employee:
+            return "Name is missing"
+
+        if employee["name"] == name:
+            return employee
+
+    return "Employee not found"
+
+
+# ------------------------------------------------------------
+# Challenge 66 — Find Employees by Department
+# ------------------------------------------------------------
+
+def find_employees_by_department(employees, department):
+    result = []
+
+    for employee in employees:
+        if "department" not in employee:
+            return "Department is missing"
+
+        if employee["department"] == department:
+            result.append(employee)
+
+    if not result:
+        return "No employees found"
+
+    return result
+
+
+# ------------------------------------------------------------
+# Challenge 67 — Calculate Average Salary
+# ------------------------------------------------------------
+
+def calculate_average_salary(employees):
+    total_emp = 0
+    total_salary = 0
+
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if isinstance(employee["salary"], (int, float)):
+            total_emp += 1
+            total_salary += employee["salary"]
+        else:
+            return "Invalid salary"
+
+    average_salary = total_salary / total_emp
+    return average_salary
+
+
+# ------------------------------------------------------------
+# Challenge 68 — Find Highest-Paid Employee
+# ------------------------------------------------------------
+
+def find_highest_paid_employee(employees):
+    highest_employee = {}
+    count = 0
+
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if isinstance(employee["salary"], (int, float)):
+            if count == 0:
+                highest_salary = employee["salary"]
+                highest_employee = employee
+                count += 1
+
+            elif highest_salary < employee["salary"]:
+                highest_salary = employee["salary"]
+                highest_employee = employee
+        else:
+            return "Invalid salary"
+
+    return highest_employee
+
+
+# ------------------------------------------------------------
+# Challenge 69 — Find Lowest-Paid Employee
+# ------------------------------------------------------------
+
+def find_lowest_paid_employee(employees):
+    lowest_employee = {}
+    count = 0
+
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if isinstance(employee["salary"], (int, float)):
+            if count == 0:
+                lowest_salary = employee["salary"]
+                lowest_employee = employee
+                count += 1
+
+            elif lowest_salary > employee["salary"]:
+                lowest_salary = employee["salary"]
+                lowest_employee = employee
+        else:
+            return "Invalid salary"
+
+    return lowest_employee
+
+
+# ------------------------------------------------------------
+# Challenge 70 — Give Raise
+# ------------------------------------------------------------
+
+def give_raise(employees, percentage):
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if isinstance(employee["salary"], (int, float)):
+            employee["salary"] = employee["salary"] * (1 + percentage / 100)
+        else:
+            return "Invalid salary"
+
+    return employees
+
+
+# ------------------------------------------------------------
+# Challenge 71 — Calculate Total Payroll
+# ------------------------------------------------------------
+
+def calculate_total_payroll(employees):
+    total_salary = 0
+
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if isinstance(employee["salary"], (int, float)):
+            total_salary += employee["salary"]
+        else:
+            return "Invalid salary"
+
+    return total_salary
+
+
+# ------------------------------------------------------------
+# Challenge 72 — Count Employees by Department
+# ------------------------------------------------------------
+
+def count_employees_by_department(employees):
+    department_counts = {}
+
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "department" not in employee:
+            return "Department is missing"
+
+        department = employee["department"]
+
+        if department in department_counts:
+            department_counts[department] += 1
+        else:
+            department_counts[department] = 1
+
+    return department_counts
+
+
+# ------------------------------------------------------------
+# Challenge 73 — Department Salary Totals
+# ------------------------------------------------------------
+
+def department_salary_totals(employees):
+    total_salary_dep = {}
+
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "department" not in employee:
+            return "Department is missing"
+
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if not isinstance(employee["salary"], (int, float)):
+            return "Invalid salary"
+
+        department = employee["department"]
+        salary = employee["salary"]
+
+        if department in total_salary_dep:
+            total_salary_dep[department] += salary
+        else:
+            total_salary_dep[department] = salary
+
+    return total_salary_dep
+
+
+# ------------------------------------------------------------
+# Challenge 74 — Department Average Salary
+# ------------------------------------------------------------
+
+def department_average_salary(employees):
+    average_salary_dep = {}
+    employee_count = {}
+    total_salary = {}
+
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "department" not in employee:
+            return "Department is missing"
+
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if not isinstance(employee["salary"], (int, float)):
+            return "Invalid salary"
+
+        department = employee["department"]
+        salary = employee["salary"]
+
+        if department in total_salary:
+            total_salary[department] += salary
+            employee_count[department] += 1
+        else:
+            total_salary[department] = salary
+            employee_count[department] = 1
+
+    for department in total_salary:
+        average_salary_dep[department] = (
+            total_salary[department] / employee_count[department]
+        )
+
+    return average_salary_dep
+
+
+# ------------------------------------------------------------
+# Challenge 75 — Highest-Paid Employee by Department
+# ------------------------------------------------------------
+
+def highest_paid_by_department(employees):
+    highest_paid = {}
+
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "department" not in employee:
+            return "Department is missing"
+
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if not isinstance(employee["salary"], (int, float)):
+            return "Invalid salary"
+
+        department = employee["department"]
+        salary = employee["salary"]
+
+        if department not in highest_paid:
+            highest_paid[department] = employee
+        else:
+            if highest_paid[department]["salary"] < salary:
+                highest_paid[department] = employee
+
+    return highest_paid
+
+
+# ------------------------------------------------------------
+# Challenge 76 — Lowest-Paid Employee by Department
+# ------------------------------------------------------------
+
+def lowest_paid_by_department(employees):
+    lowest_paid = {}
+
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "department" not in employee:
+            return "Department is missing"
+
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if not isinstance(employee["salary"], (int, float)):
+            return "Invalid salary"
+
+        department = employee["department"]
+        salary = employee["salary"]
+
+        if department not in lowest_paid:
+            lowest_paid[department] = employee
+        else:
+            if lowest_paid[department]["salary"] > salary:
+                lowest_paid[department] = employee
+
+    return lowest_paid
+
+
+# ------------------------------------------------------------
+# Challenge 77 — Department Summary
+# ------------------------------------------------------------
+
+def department_summary(employees):
+    department_details = {}
+
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "department" not in employee:
+            return "Department is missing"
+
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if not isinstance(employee["salary"], (int, float)):
+            return "Invalid salary"
+
+        department = employee["department"]
+        salary = employee["salary"]
+
+        if department not in department_details:
+            count = 1
+
+            department_details[department] = {
+                "count": count,
+                "total_salary": salary
+            }
+
+        else:
+            count = department_details[department]["count"] + 1
+            total_salary = (
+                department_details[department]["total_salary"] + salary
+            )
+
+            department_details[department] = {
+                "count": count,
+                "total_salary": total_salary
+            }
+
+    for each_department in department_details:
+        department_details[each_department]["average_salary"] = (
+            department_details[each_department]["total_salary"]
+            / department_details[each_department]["count"]
+        )
+
+    return department_details
+
+
+# ------------------------------------------------------------
+# Challenge 78 — Sort Employees by Salary
+# ------------------------------------------------------------
+
+def sort_employees_by_salary(employees):
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if not isinstance(employee["salary"], (int, float)):
+            return "Invalid salary"
+
+    employee_salary = sorted(
+        employees,
+        key=lambda employee: employee["salary"],
+        reverse=True
+    )
+
+    return employee_salary
+
+
+# ------------------------------------------------------------
+# Challenge 79 — Filter Employees by Minimum Salary
+# ------------------------------------------------------------
+
+def filter_employees_by_salary(employees, minimum_salary):
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if not isinstance(employee["salary"], (int, float)):
+            return "Invalid salary"
+
+    filter_salary = list(
+        filter(
+            lambda employee: employee["salary"] >= minimum_salary,
+            employees
+        )
+    )
+
+    return filter_salary
+
+
+# ------------------------------------------------------------
+# Challenge 80 — Format Employees using map()
+# ------------------------------------------------------------
+
+def format_employees(employees):
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "name" not in employee:
+            return "Name is missing"
+
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if not isinstance(employee["salary"], (int, float)):
+            return "Invalid salary"
+
+    formatted_employees = list(
+        map(
+            lambda employee: f"{employee['name']} - ${employee['salary']}",
+            employees
+        )
+    )
+
+    return formatted_employees
+
+
+# ------------------------------------------------------------
+# Challenge 81 — Filter + Sort Employees
+# FINAL CHALLENGE OF THIS SECTION
+# ------------------------------------------------------------
+
+def top_earners_by_department(employees, minimum_salary):
+    if not employees:
+        return "No employees"
+
+    for employee in employees:
+        if "name" not in employee:
+            return "Name is missing"
+
+        if "department" not in employee:
+            return "Department is missing"
+
+        if "salary" not in employee:
+            return "Salary is missing"
+
+        if not isinstance(employee["salary"], (int, float)):
+            return "Invalid salary"
+
+    filter_employee = list(
+        filter(
+            lambda employee: employee["salary"] >= minimum_salary,
+            employees
+        )
+    )
+
+    sorted_employee = sorted(
+        filter_employee,
+        key=lambda employee: employee["salary"],
+        reverse=True
+    )
+
+    return sorted_employee
+
+
+# ============================================================
+# KEY REVISION PATTERNS
+# ============================================================
+
+# 1. Accumulating a total
+# total += value
+
+# 2. Counting dictionary occurrences
+# if key in result:
+#     result[key] += 1
+# else:
+#     result[key] = 1
+
+# 3. Filtering
+# filtered = list(filter(lambda item: condition, items))
+
+# 4. Transforming
+# transformed = list(map(lambda item: expression, items))
+
+# 5. Sorting
+# sorted_items = sorted(
+#     items,
+#     key=lambda item: item["salary"],
+#     reverse=True
+# )
+
+# 6. Grouping using dictionaries
+# if department not in result:
+#     result[department] = ...
+# else:
+#     update existing department data
+
+# 7. Validate everything BEFORE processing
+# for employee in employees:
+#     validate...
+#
+# filter / map / sorted happens AFTER validation
