@@ -1,0 +1,304 @@
+# ============================================================
+# PYTHON REVISION COPY 5
+# JSON + FILES + VALIDATION
+# Recovered Challenges 55–64
+# ============================================================
+
+import json
+
+
+# ------------------------------------------------------------
+# Challenge 55 — Save Employee Safely
+# ------------------------------------------------------------
+
+def save_employee(employee, filename):
+    try:
+        with open(filename, "w") as file:
+            json.dump(employee, file)
+
+        return "Employee saved successfully"
+
+    except FileNotFoundError:
+        return "Unable to save employee"
+
+
+# ------------------------------------------------------------
+# Challenge 56 — Load Employee
+# ------------------------------------------------------------
+
+def load_employee(filename):
+    try:
+        with open(filename, "r") as file:
+            employee = json.load(file)
+
+        return employee
+
+    except FileNotFoundError:
+        return "Employee file not found"
+
+    except json.JSONDecodeError:
+        return "Invalid employee data"
+
+
+# ------------------------------------------------------------
+# Challenge 57 — Update Employee Salary
+# ------------------------------------------------------------
+
+def update_employee_salary(filename, new_salary):
+    try:
+        with open(filename, "r") as file:
+            employee = json.load(file)
+
+        employee["salary"] = new_salary
+
+        with open(filename, "w") as file:
+            json.dump(employee, file)
+
+        return employee
+
+    except FileNotFoundError:
+        return "Employee file not found"
+
+    except json.JSONDecodeError:
+        return "Invalid employee data"
+
+
+# ------------------------------------------------------------
+# Challenge 58 — Validate Employee
+# ------------------------------------------------------------
+
+def validate_employee(employee):
+    if "name" not in employee:
+        return "Name is missing"
+
+    elif "salary" not in employee:
+        return "Salary is missing"
+
+    elif "department" not in employee:
+        return "Department is missing"
+
+    elif not isinstance(employee["salary"], (int, float)):
+        return "Invalid salary"
+
+    elif employee["salary"] < 0:
+        return "Salary cannot be negative"
+
+    else:
+        return True
+
+
+# ------------------------------------------------------------
+# Challenge 59 — Load and Validate Employee
+# ------------------------------------------------------------
+
+def load_and_validate_employee(filename):
+    try:
+        with open(filename, "r") as file:
+            employee = json.load(file)
+
+        result = validate_employee(employee)
+
+        if result == True:
+            return employee
+        else:
+            return result
+
+    except FileNotFoundError:
+        return "Employee file not found"
+
+    except json.JSONDecodeError:
+        return "Invalid employee data"
+
+
+# ------------------------------------------------------------
+# Challenge 60 — Save Valid Employee
+# ------------------------------------------------------------
+
+def save_valid_employee(employee, filename):
+    try:
+        result = validate_employee(employee)
+
+        if result != True:
+            return result
+
+        with open(filename, "w") as file:
+            json.dump(employee, file)
+
+        return "Employee saved successfully"
+
+    except FileNotFoundError:
+        return "Unable to save employee"
+
+
+# ------------------------------------------------------------
+# Challenge 61 — Load Employees
+# ------------------------------------------------------------
+
+def load_employees(filename):
+    try:
+        with open(filename, "r") as file:
+            employees = json.load(file)
+
+        return employees
+
+    except FileNotFoundError:
+        return "Employee file not found"
+
+    except json.JSONDecodeError:
+        return "Invalid employee data"
+
+
+# ------------------------------------------------------------
+# Challenge 62 — Validate Employees
+# ------------------------------------------------------------
+
+def validate_employees(employees):
+    for employee in employees:
+        result = validate_employee(employee)
+
+        if result != True:
+            return result
+
+    return True
+
+
+# ------------------------------------------------------------
+# Challenge 63 — Load and Validate Employees
+# ------------------------------------------------------------
+
+def load_and_validate_employees(filename):
+    try:
+        with open(filename, "r") as file:
+            employees = json.load(file)
+
+        result = validate_employees(employees)
+
+        if result != True:
+            return result
+
+        return employees
+
+    except FileNotFoundError:
+        return "Employee file not found"
+
+    except json.JSONDecodeError:
+        return "Invalid employee data"
+
+
+# ------------------------------------------------------------
+# Challenge 64 — Save Employees
+# ------------------------------------------------------------
+
+def save_employees(employees, filename):
+    try:
+        result = validate_employees(employees)
+
+        if result != True:
+            return result
+
+        with open(filename, "w") as file:
+            json.dump(employees, file)
+
+        return "Employees saved successfully"
+
+    except FileNotFoundError:
+        return "Unable to save employees"
+
+
+# ============================================================
+# IMPORTANT REVISION NOTES
+# ============================================================
+
+# 1. json.load(file)
+#    JSON file -> Python object
+
+# 2. json.dump(data, file)
+#    Python object -> JSON file
+
+# 3. json.loads(text)
+#    JSON string -> Python object
+
+# 4. json.dumps(data)
+#    Python object -> JSON string
+
+
+# ------------------------------------------------------------
+# FILE READING
+# ------------------------------------------------------------
+
+# with open("employee.json", "r") as file:
+#     employee = json.load(file)
+
+
+# ------------------------------------------------------------
+# FILE WRITING
+# ------------------------------------------------------------
+
+# with open("employee.json", "w") as file:
+#     json.dump(employee, file)
+
+
+# ------------------------------------------------------------
+# VALIDATION PATTERN
+# ------------------------------------------------------------
+
+# result = validate_employee(employee)
+#
+# if result != True:
+#     return result
+
+
+# ------------------------------------------------------------
+# VALIDATING A LIST
+# ------------------------------------------------------------
+
+# for employee in employees:
+#     result = validate_employee(employee)
+#
+#     if result != True:
+#         return result
+#
+# return True
+
+
+# ------------------------------------------------------------
+# IMPORTANT LOOP LESSON
+# ------------------------------------------------------------
+
+# WRONG IDEA:
+#
+# for employee in employees:
+#     if valid:
+#         return True
+#
+# This checks only the first employee.
+
+
+# CORRECT IDEA:
+#
+# for employee in employees:
+#     if invalid:
+#         return error
+#
+# return True
+#
+# Success is returned only AFTER every employee passes.
+
+
+# ------------------------------------------------------------
+# READ -> MODIFY -> WRITE
+# ------------------------------------------------------------
+
+# with open(filename, "r") as file:
+#     employee = json.load(file)
+#
+# employee["salary"] = new_salary
+#
+# with open(filename, "w") as file:
+#     json.dump(employee, file)
+
+
+# ============================================================
+# END OF REVISION COPY 5
+# Next section begins with Challenge 65
+# ============================================================
