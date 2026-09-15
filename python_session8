@@ -1,0 +1,1045 @@
+# ============================================================
+# PYTHON REVISION COPY 7
+# ADVANCED FILE HANDLING
+# Challenges 82–112
+# ============================================================
+
+
+# ============================================================
+# 1. PATHLIB BASICS
+# ============================================================
+
+from pathlib import Path
+
+path_obj = Path("example.txt")
+
+# Check whether path exists
+path_obj.exists()
+
+# Check whether path is a file
+path_obj.is_file()
+
+# Check whether path is a directory
+path_obj.is_dir()
+
+
+# ------------------------------------------------------------
+# Challenge 82 - Check if File Exists
+# ------------------------------------------------------------
+
+def file_exists(filepath):
+    path_obj = Path(filepath)
+
+    if path_obj.exists():
+        return "File exists"
+    else:
+        return "File not found"
+
+
+# ------------------------------------------------------------
+# Challenge 83 - Check Path Type
+# ------------------------------------------------------------
+
+def check_path_type(filepath):
+    path_obj = Path(filepath)
+
+    if not path_obj.exists():
+        return "Path not found"
+
+    if path_obj.is_file():
+        return "This is a file"
+    elif path_obj.is_dir():
+        return "This is a directory"
+
+
+# ============================================================
+# 2. PATH PROPERTIES
+# ============================================================
+
+path_obj = Path("reports/employees.json")
+
+# Full filename
+path_obj.name
+# employees.json
+
+# File extension
+path_obj.suffix
+# .json
+
+# Filename without extension
+path_obj.stem
+# employees
+
+# Parent directory
+path_obj.parent
+# reports
+
+
+# ------------------------------------------------------------
+# Challenge 84 - Get File Information
+# ------------------------------------------------------------
+
+def get_file_info(filepath):
+    path_obj = Path(filepath)
+
+    if not path_obj.exists():
+        return "File not found"
+
+    return {
+        "name": path_obj.name,
+        "extension": path_obj.suffix,
+        "parent": str(path_obj.parent)
+    }
+
+
+# ============================================================
+# 3. CREATING DIRECTORIES
+# ============================================================
+
+# Create one directory
+# path_obj.mkdir()
+
+# Create nested directories
+# path_obj.mkdir(parents=True)
+
+
+# ------------------------------------------------------------
+# Challenge 85 - Create Directory
+# ------------------------------------------------------------
+
+def create_directory(directory):
+    path_obj = Path(directory)
+
+    if path_obj.exists() and path_obj.is_dir():
+        return "Directory already exists"
+
+    path_obj.mkdir()
+    return "Directory created"
+
+
+# ------------------------------------------------------------
+# Challenge 86 - Create Nested Directory
+# ------------------------------------------------------------
+
+def create_nested_directory(directory):
+    path_obj = Path(directory)
+
+    if path_obj.exists():
+        return "Directory already exists"
+
+    path_obj.mkdir(parents=True)
+    return "Directory created"
+
+
+# ============================================================
+# 4. LISTING DIRECTORY CONTENTS
+# ============================================================
+
+# iterdir() reads immediate directory contents.
+#
+# for item in path_obj.iterdir():
+#     print(item)
+
+
+# ------------------------------------------------------------
+# Challenge 87 - List Files
+# ------------------------------------------------------------
+
+def list_files(directory):
+    result = []
+    path_obj = Path(directory)
+
+    if not path_obj.exists():
+        return "Directory not found"
+
+    if not path_obj.is_dir():
+        return "Not a directory"
+
+    for item in path_obj.iterdir():
+        if item.is_file():
+            result.append(item.name)
+
+    return result
+
+
+# ------------------------------------------------------------
+# Challenge 88 - List Files by Extension
+# ------------------------------------------------------------
+
+def list_files_by_extension(directory, extension):
+    path_obj = Path(directory)
+    result = []
+
+    if not path_obj.exists():
+        return "Directory not found"
+
+    if not path_obj.is_dir():
+        return "Not a directory"
+
+    for item in path_obj.iterdir():
+        if item.is_file() and item.suffix == extension:
+            result.append(item.name)
+
+    return result
+
+
+# ------------------------------------------------------------
+# Challenge 89 - Count Files by Extension
+# ------------------------------------------------------------
+
+def count_files_by_extension(directory):
+    path_obj = Path(directory)
+    result = {}
+
+    if not path_obj.exists():
+        return "Directory not found"
+
+    if not path_obj.is_dir():
+        return "Not a directory"
+
+    for item in path_obj.iterdir():
+
+        if item.is_file():
+
+            extension = item.suffix
+
+            if extension not in result:
+                result[extension] = 1
+            else:
+                result[extension] += 1
+
+    return result
+
+
+# ============================================================
+# 5. RENAMING FILES
+# ============================================================
+
+# Build paths using /
+#
+# path_obj.parent / "new_name.txt"
+
+
+# ------------------------------------------------------------
+# Challenge 90 - Rename File
+# ------------------------------------------------------------
+
+def rename_file(filepath, new_name):
+    path_obj = Path(filepath)
+
+    if not path_obj.exists():
+        return "File not found"
+
+    if not path_obj.is_file():
+        return "Not a file"
+
+    path_obj.rename(path_obj.parent / new_name)
+
+    return "File renamed"
+
+
+# ============================================================
+# 6. DELETING FILES AND DIRECTORIES
+# ============================================================
+
+# Delete file
+# path_obj.unlink()
+
+# Delete EMPTY directory
+# path_obj.rmdir()
+
+
+# ------------------------------------------------------------
+# Challenge 91 - Delete File
+# ------------------------------------------------------------
+
+def delete_file(filepath):
+    path_obj = Path(filepath)
+
+    if not path_obj.exists():
+        return "File not found"
+
+    if not path_obj.is_file():
+        return "Not a file"
+
+    path_obj.unlink()
+
+    return "File deleted"
+
+
+# ------------------------------------------------------------
+# Challenge 92 - Delete Empty Directory
+# ------------------------------------------------------------
+
+def delete_directory(directory):
+    path_obj = Path(directory)
+
+    if not path_obj.exists():
+        return "Directory not found"
+
+    if not path_obj.is_dir():
+        return "Not a directory"
+
+    path_obj.rmdir()
+
+    return "Directory deleted"
+
+
+# ============================================================
+# 7. READING AND WRITING TEXT
+# ============================================================
+
+# Read entire text file
+#
+# content = path_obj.read_text(encoding="utf-8")
+
+
+# ------------------------------------------------------------
+# Challenge 93 - Read Text File
+# ------------------------------------------------------------
+
+def read_text_file(filepath):
+    path_obj = Path(filepath)
+
+    if not path_obj.exists():
+        return "File not found"
+
+    if not path_obj.is_file():
+        return "Not a file"
+
+    return path_obj.read_text(encoding="utf-8")
+
+
+# Write entire file
+#
+# path_obj.write_text(content, encoding="utf-8")
+#
+# IMPORTANT:
+# write_text() overwrites an existing file.
+
+
+# ------------------------------------------------------------
+# Challenge 94 - Write Text File
+# ------------------------------------------------------------
+
+def write_text_file(filepath, content):
+    path_obj = Path(filepath)
+
+    if path_obj.exists() and path_obj.is_dir():
+        return "Not a file"
+
+    path_obj.write_text(content, encoding="utf-8")
+
+    return "File written"
+
+
+# ============================================================
+# 8. FILE METADATA
+# ============================================================
+
+# stat() returns filesystem metadata.
+
+# File size in bytes
+# path_obj.stat().st_size
+
+# Modification timestamp
+# path_obj.stat().st_mtime
+
+
+# ------------------------------------------------------------
+# Challenge 95 - File Size
+# ------------------------------------------------------------
+
+def get_file_size(filepath):
+    path_obj = Path(filepath)
+
+    if not path_obj.exists():
+        return "File not found"
+
+    if not path_obj.is_file():
+        return "Not a file"
+
+    return path_obj.stat().st_size
+
+
+# ------------------------------------------------------------
+# Challenge 96 - Last Modified Time
+# ------------------------------------------------------------
+
+from datetime import datetime
+
+
+def get_last_modified(filepath):
+    path_obj = Path(filepath)
+
+    if not path_obj.exists():
+        return "File not found"
+
+    if not path_obj.is_file():
+        return "Not a file"
+
+    timestamp = path_obj.stat().st_mtime
+
+    date_time = datetime.fromtimestamp(timestamp)
+
+    return date_time.strftime("%Y-%m-%d %H:%M:%S")
+
+
+# ============================================================
+# 9. RECURSIVE FILE SEARCHING
+# ============================================================
+
+# iterdir()
+#     -> immediate directory only
+#
+# glob()
+#     -> pattern matching in current directory
+#
+# rglob()
+#     -> recursive pattern matching
+
+
+# ------------------------------------------------------------
+# Challenge 97 - List All Files Recursively
+# ------------------------------------------------------------
+
+def list_all_files(directory):
+    path_obj = Path(directory)
+    result = []
+
+    if not path_obj.exists():
+        return "Directory not found"
+
+    if not path_obj.is_dir():
+        return "Not a directory"
+
+    for item in path_obj.rglob("*"):
+
+        if item.is_file():
+            result.append(str(item))
+
+    return result
+
+
+# ------------------------------------------------------------
+# Challenge 98 - Find Files by Extension Recursively
+# ------------------------------------------------------------
+
+def find_files_by_extension(directory, extension):
+    path_obj = Path(directory)
+    result = []
+
+    if not path_obj.exists():
+        return "Directory not found"
+
+    if not path_obj.is_dir():
+        return "Not a directory"
+
+    pattern = "*" + extension
+
+    for item in path_obj.rglob(pattern):
+
+        if item.is_file():
+            result.append(str(item))
+
+    return result
+
+
+# ============================================================
+# 10. SHUTIL - COPY AND MOVE
+# ============================================================
+
+import shutil
+
+# Copy file
+# shutil.copy(source, destination)
+
+# Move file/directory
+# shutil.move(source, destination)
+
+
+# ------------------------------------------------------------
+# Challenge 99 - Copy File
+# ------------------------------------------------------------
+
+def copy_file(filepath, destination_directory):
+    source = Path(filepath)
+    destination = Path(destination_directory)
+
+    if not source.exists():
+        return "File not found"
+
+    if not source.is_file():
+        return "Not a file"
+
+    if not destination.exists():
+        return "Destination not found"
+
+    if not destination.is_dir():
+        return "Destination is not a directory"
+
+    shutil.copy(
+        source,
+        destination / source.name
+    )
+
+    return "File copied"
+
+
+# ------------------------------------------------------------
+# Challenge 100 - Move File
+# ------------------------------------------------------------
+
+def move_file(filepath, destination_directory):
+    source = Path(filepath)
+    destination = Path(destination_directory)
+
+    if not source.exists():
+        return "File not found"
+
+    if not source.is_file():
+        return "Not a file"
+
+    if not destination.exists():
+        return "Destination not found"
+
+    if not destination.is_dir():
+        return "Destination is not a directory"
+
+    shutil.move(
+        source,
+        destination / source.name
+    )
+
+    return "File moved"
+
+
+# ============================================================
+# 11. COPYING DIRECTORY TREES
+# ============================================================
+
+# shutil.copytree()
+#
+# Copies an entire directory including nested files/directories.
+
+
+# ------------------------------------------------------------
+# Challenge 101 - Copy Directory
+# ------------------------------------------------------------
+
+def copy_directory(source_directory, destination_directory):
+    source = Path(source_directory)
+    destination = Path(destination_directory)
+
+    if not source.exists():
+        return "Directory not found"
+
+    if not source.is_dir():
+        return "Not a directory"
+
+    if destination.exists():
+        return "Destination already exists"
+
+    shutil.copytree(source, destination)
+
+    return "Directory copied"
+
+
+# ============================================================
+# 12. DELETING DIRECTORY TREES
+# ============================================================
+
+# shutil.rmtree()
+#
+# Deletes directory + EVERYTHING inside it.
+#
+# Be careful: destructive operation.
+
+
+# ------------------------------------------------------------
+# Challenge 102 - Delete Directory Tree
+# ------------------------------------------------------------
+
+def delete_directory_tree(directory):
+    path_obj = Path(directory)
+
+    if not path_obj.exists():
+        return "Directory not found"
+
+    if not path_obj.is_dir():
+        return "Not a directory"
+
+    shutil.rmtree(path_obj)
+
+    return "Directory deleted"
+
+
+# ============================================================
+# 13. ABSOLUTE PATHS
+# ============================================================
+
+# resolve()
+#
+# Converts a relative path into an absolute path.
+
+
+# ------------------------------------------------------------
+# Challenge 103 - Get Absolute Path
+# ------------------------------------------------------------
+
+def get_absolute_path(filepath):
+    path_obj = Path(filepath)
+
+    if not path_obj.exists():
+        return "Path not found"
+
+    return str(path_obj.resolve())
+
+
+# ============================================================
+# 14. CURRENT WORKING DIRECTORY
+# ============================================================
+
+# Path.cwd()
+#
+# Returns current working directory.
+
+
+# ------------------------------------------------------------
+# Challenge 104
+# ------------------------------------------------------------
+
+def get_current_directory():
+    return str(Path.cwd())
+
+
+# ============================================================
+# 15. STEM / SUFFIX / PARENT
+# ============================================================
+
+# Example:
+#
+# Path("data/employees.json")
+#
+# name   -> employees.json
+# stem   -> employees
+# suffix -> .json
+# parent -> data
+
+
+# ------------------------------------------------------------
+# Challenge 105 - Build Backup Path
+# ------------------------------------------------------------
+
+def get_backup_path(filepath):
+    path_obj = Path(filepath)
+
+    if not path_obj.exists():
+        return "File not found"
+
+    if not path_obj.is_file():
+        return "Not a file"
+
+    new_file_name = (
+        path_obj.stem
+        + "_backup"
+        + path_obj.suffix
+    )
+
+    new_path = path_obj.parent / new_file_name
+
+    return str(new_path)
+
+
+# ============================================================
+# 16. WITH_SUFFIX()
+# ============================================================
+
+# with_suffix() creates a NEW Path object.
+#
+# It DOES NOT rename/create a file.
+#
+# Example:
+#
+# Path("employees.txt").with_suffix(".csv")
+#
+# -> employees.csv
+
+
+# ------------------------------------------------------------
+# Challenge 106
+# ------------------------------------------------------------
+
+def change_extension(filepath, new_extension):
+    path_obj = Path(filepath)
+
+    if not path_obj.exists():
+        return "File not found"
+
+    if not path_obj.is_file():
+        return "Not a file"
+
+    new_path = path_obj.with_suffix(new_extension)
+
+    return str(new_path)
+
+
+# ============================================================
+# 17. WITH_NAME()
+# ============================================================
+
+# with_name() changes the filename portion
+# of a Path object.
+#
+# It DOES NOT rename the actual file.
+
+
+# ------------------------------------------------------------
+# Challenge 107
+# ------------------------------------------------------------
+
+def get_processed_path(filepath):
+    path_obj = Path(filepath)
+
+    if not path_obj.exists():
+        return "File not found"
+
+    if not path_obj.is_file():
+        return "Not a file"
+
+    updated_file = "processed_" + path_obj.name
+
+    new_path = path_obj.with_name(updated_file)
+
+    return str(new_path)
+
+
+# ============================================================
+# 18. READING LARGE FILES LINE BY LINE
+# ============================================================
+
+# read_text()
+# -> reads entire file into memory
+#
+# open() + for loop
+# -> processes one line at a time
+#
+# Better for large files.
+
+
+# ------------------------------------------------------------
+# Challenge 108 - Count Lines
+# ------------------------------------------------------------
+
+def count_lines(filepath):
+    path_obj = Path(filepath)
+    count = 0
+
+    if not path_obj.exists():
+        return "File not found"
+
+    if not path_obj.is_file():
+        return "Not a file"
+
+    with path_obj.open(
+        "r",
+        encoding="utf-8"
+    ) as file:
+
+        for line in file:
+            count += 1
+
+    return count
+
+
+# ============================================================
+# 19. APPENDING TO FILES
+# ============================================================
+
+# File modes:
+#
+# "r" -> read
+# "w" -> write / overwrite
+# "a" -> append
+
+
+# ------------------------------------------------------------
+# Challenge 109 - Append Line
+# ------------------------------------------------------------
+
+def append_line(filepath, content):
+    path_obj = Path(filepath)
+
+    if path_obj.exists() and not path_obj.is_file():
+        return "Not a file"
+
+    with path_obj.open(
+        "a",
+        encoding="utf-8"
+    ) as file:
+
+        file.write(content + "\n")
+
+    return "Content appended"
+
+
+# ============================================================
+# 20. FILESYSTEM EXCEPTION HANDLING
+# ============================================================
+
+# PermissionError is more specific than OSError.
+#
+# Therefore:
+#
+# except PermissionError
+# must appear BEFORE
+# except OSError
+
+
+# ------------------------------------------------------------
+# Challenge 110 - Safe File Reading
+# ------------------------------------------------------------
+
+def safe_read_file(filepath):
+    path_obj = Path(filepath)
+
+    if not path_obj.exists():
+        return "File not found"
+
+    if not path_obj.is_file():
+        return "Not a file"
+
+    try:
+
+        return path_obj.read_text(
+            encoding="utf-8"
+        )
+
+    except PermissionError:
+        return "Permission denied"
+
+    except OSError:
+        return "Unable to read file"
+
+
+# ============================================================
+# 21. TEMPORARY FILES
+# ============================================================
+
+import tempfile
+
+# NamedTemporaryFile creates a temporary file.
+#
+# delete=False means:
+# keep the file after closing it.
+#
+# The program becomes responsible for cleanup.
+
+
+# ------------------------------------------------------------
+# Challenge 111 - Create Temporary File
+# ------------------------------------------------------------
+
+def create_temp_file(content):
+
+    with tempfile.NamedTemporaryFile(
+        mode="w",
+        encoding="utf-8",
+        delete=False
+    ) as temp:
+
+        temp.write(content)
+
+    return temp.name
+
+
+# ============================================================
+# 22. FINAL COMBINED CHALLENGE
+# ============================================================
+
+# Find all .txt files recursively
+# and copy them into a backup directory.
+
+
+# ------------------------------------------------------------
+# Challenge 112 - Backup Text Files
+# ------------------------------------------------------------
+
+def backup_text_files(
+    source_directory,
+    backup_directory
+):
+    source = Path(source_directory)
+    backup = Path(backup_directory)
+
+    count = 0
+
+    if not source.exists():
+        return "Source directory not found"
+
+    if not source.is_dir():
+        return "Source is not a directory"
+
+    if backup.exists() and not backup.is_dir():
+        return "Backup is not a directory"
+
+    if not backup.exists():
+        backup.mkdir(
+            parents=True,
+            exist_ok=True
+        )
+
+    for file in source.rglob("*.txt"):
+
+        if file.is_file():
+
+            shutil.copy(
+                file,
+                backup / file.name
+            )
+
+            count += 1
+
+    return count
+
+
+# ============================================================
+# QUICK REVISION CHEAT SHEET
+# ============================================================
+
+# PATH CHECKING
+#
+# Path(filepath)
+# path.exists()
+# path.is_file()
+# path.is_dir()
+
+
+# PATH INFORMATION
+#
+# path.name
+# path.stem
+# path.suffix
+# path.parent
+
+
+# DIRECTORIES
+#
+# path.mkdir()
+# path.mkdir(parents=True)
+# path.rmdir()
+
+
+# FILE DELETION
+#
+# path.unlink()
+
+
+# FILE READING / WRITING
+#
+# path.read_text(encoding="utf-8")
+# path.write_text(content, encoding="utf-8")
+#
+# path.open("r", encoding="utf-8")
+# path.open("a", encoding="utf-8")
+
+
+# DIRECTORY CONTENTS
+#
+# path.iterdir()
+# path.glob("*.txt")
+# path.rglob("*.txt")
+
+
+# FILE METADATA
+#
+# path.stat().st_size
+# path.stat().st_mtime
+
+
+# PATH CONSTRUCTION
+#
+# path.parent / "filename.txt"
+#
+# path.with_suffix(".csv")
+# path.with_name("new_name.txt")
+
+
+# PATH LOCATION
+#
+# path.resolve()
+# Path.cwd()
+
+
+# SHUTIL
+#
+# shutil.copy()
+# shutil.move()
+# shutil.copytree()
+# shutil.rmtree()
+
+
+# TEMP FILES
+#
+# tempfile.NamedTemporaryFile()
+
+
+# ============================================================
+# IMPORTANT DIFFERENCES TO REMEMBER
+# ============================================================
+
+# unlink()
+# -> delete FILE
+
+# rmdir()
+# -> delete EMPTY DIRECTORY
+
+# shutil.rmtree()
+# -> delete DIRECTORY + EVERYTHING INSIDE
+
+
+# read_text()
+# -> read entire file into memory
+
+# path.open() + for loop
+# -> process file line-by-line
+
+
+# write_text()
+# -> overwrite file
+
+# open("a")
+# -> append to file
+
+
+# iterdir()
+# -> immediate directory contents
+
+# glob()
+# -> pattern search in current directory
+
+# rglob()
+# -> recursive pattern search
+
+
+# shutil.copy()
+# -> original remains
+
+# shutil.move()
+# -> original moves
+
+
+# with_suffix()
+# -> constructs another Path with different extension
+# -> DOES NOT modify disk
+
+# with_name()
+# -> constructs another Path with different filename
+# -> DOES NOT modify disk
+
+
+# ============================================================
+# END OF REVISION COPY 7
+# ADVANCED FILE HANDLING COMPLETE
+# NEXT MAJOR TOPIC: OOP / CLASSES
+# ============================================================
