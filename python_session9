@@ -1,0 +1,1388 @@
+# ============================================================
+# PYTHON REVISION COPY 9
+# OBJECT-ORIENTED PROGRAMMING (OOP)
+# Challenges 1–21
+# ============================================================
+
+
+# ============================================================
+# 1. CLASS AND OBJECT
+# ============================================================
+
+# A class is a blueprint.
+# An object is an instance of that class.
+
+class Employee:
+
+    def __init__(self, name, department, salary):
+        self.name = name
+        self.department = department
+        self.salary = salary
+
+
+employee1 = Employee("Naveen", "IT", 100000)
+
+print(employee1.name)
+print(employee1.department)
+print(employee1.salary)
+
+
+# ------------------------------------------------------------
+# KEY POINTS
+# ------------------------------------------------------------
+
+# __init__()
+#   - Called automatically when an object is created.
+#
+# self
+#   - Represents the current object.
+#
+# self.name
+# self.department
+# self.salary
+#   - Instance attributes.
+
+
+# ============================================================
+# 2. INSTANCE METHODS
+# ============================================================
+
+class Employee:
+
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+
+    def give_raise(self, amount):
+        self.salary += amount
+
+
+employee1 = Employee("Naveen", 100000)
+
+employee1.give_raise(10000)
+
+print(employee1.salary)
+# 110000
+
+
+# Instance methods normally receive:
+#
+# self
+#
+# They can read or modify the current object's data.
+
+
+# ============================================================
+# 3. METHODS THAT RETURN VALUES
+# ============================================================
+
+class Employee:
+
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+
+    def get_annual_bonus(self, percentage):
+        return self.salary * percentage / 100
+
+
+employee1 = Employee("Naveen", 100000)
+
+bonus = employee1.get_annual_bonus(10)
+
+print(bonus)
+# 10000.0
+
+
+# ============================================================
+# 4. MULTIPLE OBJECTS ARE INDEPENDENT
+# ============================================================
+
+class Employee:
+
+    def __init__(self, name, department, salary):
+        self.name = name
+        self.department = department
+        self.salary = salary
+
+    def give_raise(self, amount):
+        self.salary += amount
+
+    def get_annual_bonus(self, percentage):
+        return self.salary * percentage / 100
+
+
+employee1 = Employee("Naveen", "IT", 100000)
+employee2 = Employee("Alice", "Finance", 80000)
+
+employee1.give_raise(10000)
+employee2.give_raise(5000)
+
+print(employee1.salary)
+# 110000
+
+print(employee2.salary)
+# 85000
+
+print(employee1.get_annual_bonus(10))
+# 11000.0
+
+print(employee2.get_annual_bonus(5))
+# 4250.0
+
+
+# Each object has its own instance attributes.
+
+
+# ============================================================
+# 5. CLASS ATTRIBUTES VS INSTANCE ATTRIBUTES
+# ============================================================
+
+class BankAccount:
+
+    # Class attribute
+    # Shared conceptually by all BankAccount objects.
+    bank_name = "ABC Bank"
+
+    def __init__(self, account_holder, balance):
+
+        # Instance attributes
+        self.account_holder = account_holder
+        self.balance = balance
+
+
+account1 = BankAccount("Naveen", 5000)
+account2 = BankAccount("Alice", 8000)
+
+print(account1.account_holder)
+print(account1.balance)
+
+print(account2.account_holder)
+print(account2.balance)
+
+print(BankAccount.bank_name)
+
+
+# Class attribute:
+#
+# BankAccount.bank_name
+#
+# Instance attributes:
+#
+# account1.account_holder
+# account1.balance
+
+
+# ============================================================
+# 6. METHODS THAT MODIFY OBJECT STATE + VALIDATION
+# ============================================================
+
+class BankAccount:
+
+    bank_name = "ABC Bank"
+
+    def __init__(self, account_holder, balance):
+        self.account_holder = account_holder
+        self.balance = balance
+
+    def deposit(self, amount):
+        self.balance += amount
+        return "Deposit successful"
+
+    def withdraw(self, amount):
+
+        if amount <= self.balance:
+            self.balance -= amount
+            return "Withdrawal successful"
+
+        return "Insufficient balance"
+
+
+account1 = BankAccount("Naveen", 5000)
+
+print(account1.deposit(2000))
+print(account1.withdraw(1000))
+
+print(account1.balance)
+# 6000
+
+
+# ============================================================
+# 7. __str__()
+# ============================================================
+
+# __str__() controls how an object is displayed by print().
+
+class Product:
+
+    def __init__(self, name, price, quantity):
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+
+    def __str__(self):
+        return f"{self.name} - ${self.price} - Quantity: {self.quantity}"
+
+
+product1 = Product("Laptop", 1200, 2)
+
+print(product1)
+
+# Laptop - $1200 - Quantity: 2
+
+
+# __str__() MUST return a string.
+
+
+# ============================================================
+# 8. ENCAPSULATION
+# ============================================================
+
+# Public attribute:
+#
+# self.balance
+#
+# Internal-use convention:
+#
+# self._balance
+#
+# Name-mangled attribute:
+#
+# self.__balance
+
+
+class BankAccount:
+
+    def __init__(self, account_holder, balance):
+        self.account_holder = account_holder
+        self.__balance = balance
+
+    def get_balance(self):
+        return self.__balance
+
+    def deposit(self, amount):
+        self.__balance += amount
+
+
+account1 = BankAccount("Naveen", 5000)
+
+account1.deposit(2000)
+
+print(account1.get_balance())
+# 7000
+
+
+# Normally this will NOT work:
+#
+# account1.__balance
+#
+# Python performs name mangling.
+#
+# Internally it is approximately:
+#
+# account1._BankAccount__balance
+#
+# IMPORTANT:
+# __ does NOT provide absolute security.
+# It mainly prevents accidental direct access.
+
+
+# ============================================================
+# 9. @property — GETTERS AND SETTERS
+# ============================================================
+
+class Product:
+
+    def __init__(self, name, price):
+        self.name = name
+        self.__price = price
+
+    @property
+    def price(self):
+        return self.__price
+
+    @price.setter
+    def price(self, new_price):
+
+        if new_price >= 0:
+            self.__price = new_price
+
+
+product1 = Product("Laptop", 1200)
+
+print(product1.price)
+# 1200
+
+product1.price = 1500
+
+print(product1.price)
+# 1500
+
+product1.price = -500
+
+print(product1.price)
+# Still 1500
+
+
+# @property allows:
+#
+# product1.price
+#
+# instead of:
+#
+# product1.get_price()
+#
+#
+# @price.setter allows:
+#
+# product1.price = 1500
+#
+# while still running validation logic.
+
+
+# ============================================================
+# 10. BASIC INHERITANCE
+# ============================================================
+
+class Vehicle:
+
+    def __init__(self, brand, year):
+        self.brand = brand
+        self.year = year
+
+    def get_info(self):
+        return f"{self.brand} - {self.year}"
+
+
+class Car(Vehicle):
+    pass
+
+
+car1 = Car("Toyota", 2025)
+
+print(car1.brand)
+print(car1.year)
+print(car1.get_info())
+
+
+# Car inherits:
+#
+# Vehicle.__init__()
+# Vehicle.get_info()
+#
+#
+# Relationship:
+#
+# Car IS-A Vehicle
+
+
+# ============================================================
+# 11. super()
+# ============================================================
+
+# Use super() when the child needs its own initialization
+# while also using parent initialization.
+
+
+class Vehicle:
+
+    def __init__(self, brand, year):
+        self.brand = brand
+        self.year = year
+
+
+class Car(Vehicle):
+
+    def __init__(self, brand, year, number_of_doors):
+
+        super().__init__(brand, year)
+
+        self.number_of_doors = number_of_doors
+
+
+car1 = Car("Toyota", 2025, 4)
+
+print(car1.brand)
+print(car1.year)
+print(car1.number_of_doors)
+
+
+# IMPORTANT:
+#
+# Correct:
+#
+# super().__init__(brand, year)
+#
+#
+# NOT:
+#
+# super().__init__(self, brand, year)
+#
+#
+# self is passed automatically.
+
+
+# ============================================================
+# 12. METHOD OVERRIDING
+# ============================================================
+
+class Vehicle:
+
+    def __init__(self, brand, year):
+        self.brand = brand
+        self.year = year
+
+    def get_info(self):
+        return f"{self.brand} - {self.year}"
+
+
+class Car(Vehicle):
+
+    def __init__(self, brand, year, number_of_doors):
+
+        super().__init__(brand, year)
+
+        self.number_of_doors = number_of_doors
+
+    def get_info(self):
+
+        base_info = super().get_info()
+
+        return f"{base_info} - {self.number_of_doors} doors"
+
+
+car1 = Car("Toyota", 2025, 4)
+
+print(car1.get_info())
+
+# Toyota - 2025 - 4 doors
+
+
+# Child class overrides:
+#
+# Vehicle.get_info()
+#
+# with:
+#
+# Car.get_info()
+#
+#
+# super().get_info()
+#
+# lets us reuse the parent's implementation.
+
+
+# ============================================================
+# 13. POLYMORPHISM
+# ============================================================
+
+class Employee:
+
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+
+    def calculate_bonus(self):
+        return self.salary * 0.05
+
+
+class Manager(Employee):
+
+    def calculate_bonus(self):
+        return self.salary * 0.10
+
+
+class Developer(Employee):
+
+    def calculate_bonus(self):
+        return self.salary * 0.08
+
+
+employees = [
+
+    Employee("Alice", 100000),
+
+    Manager("Bob", 100000),
+
+    Developer("Charlie", 100000)
+
+]
+
+
+for employee in employees:
+
+    print(
+        f"{employee.name} -> "
+        f"{employee.calculate_bonus()}"
+    )
+
+
+# Alice -> 5000.0
+# Bob -> 10000.0
+# Charlie -> 8000.0
+
+
+# Same method call:
+#
+# employee.calculate_bonus()
+#
+# Different behavior depending on the object.
+#
+# This is polymorphism.
+
+
+# ============================================================
+# 14. isinstance() AND issubclass()
+# ============================================================
+
+manager1 = Manager("Bob", 100000)
+
+
+print(isinstance(manager1, Manager))
+# True
+
+print(isinstance(manager1, Employee))
+# True
+
+print(isinstance(manager1, Developer))
+# False
+
+
+print(issubclass(Manager, Employee))
+# True
+
+print(issubclass(Developer, Employee))
+# True
+
+print(issubclass(Employee, Manager))
+# False
+
+
+# Easy distinction:
+#
+# isinstance(object, class)
+#
+# issubclass(class, class)
+
+
+# ============================================================
+# 15. @classmethod
+# ============================================================
+
+class Employee:
+
+    company = "ABC Corp"
+
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+
+    @classmethod
+    def get_company(cls):
+        return cls.company
+
+
+employee1 = Employee("Naveen", 100000)
+
+print(employee1.name)
+print(employee1.salary)
+
+print(Employee.get_company())
+
+# ABC Corp
+
+
+# self
+#   -> current object
+#
+# cls
+#   -> current class
+
+
+# ============================================================
+# 16. CLASS METHOD AS ALTERNATIVE CONSTRUCTOR
+# ============================================================
+
+class Product:
+
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+    @classmethod
+    def from_string(cls, product_string):
+
+        name, price = product_string.split("-")
+
+        return cls(name, int(price))
+
+
+product1 = Product.from_string("Laptop-1200")
+
+print(product1.name)
+# Laptop
+
+print(product1.price)
+# 1200
+
+
+# Normal constructor:
+#
+# Product("Laptop", 1200)
+#
+#
+# Alternative constructor:
+#
+# Product.from_string("Laptop-1200")
+#
+#
+# Important:
+#
+# cls(...)
+#
+# creates an object of the current class.
+
+
+# ============================================================
+# 17. @staticmethod
+# ============================================================
+
+class Product:
+
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+    @staticmethod
+    def is_valid_price(price):
+        return price >= 0
+
+
+print(Product.is_valid_price(1200))
+# True
+
+print(Product.is_valid_price(-500))
+# False
+
+print(Product.is_valid_price(0))
+# True
+
+
+# Static method:
+#
+# - Does not automatically receive self
+# - Does not automatically receive cls
+# - Usually performs a utility or validation operation
+#   related to the class.
+
+
+# ============================================================
+# INSTANCE vs CLASS vs STATIC METHODS
+# ============================================================
+
+# INSTANCE METHOD
+#
+# def method(self):
+#     ...
+#
+# Works with a particular object.
+#
+# Example:
+#
+# self.salary
+
+
+# CLASS METHOD
+#
+# @classmethod
+# def method(cls):
+#     ...
+#
+# Works with the class.
+#
+# Example:
+#
+# cls.company
+
+
+# STATIC METHOD
+#
+# @staticmethod
+# def method(value):
+#     ...
+#
+# Doesn't need the object or class.
+
+
+# Shortcut:
+#
+# Need object data?
+#     -> self
+#
+# Need class data?
+#     -> cls
+#
+# Need neither?
+#     -> @staticmethod
+
+
+# ============================================================
+# 18. COMPOSITION — HAS-A RELATIONSHIP
+# ============================================================
+
+class Address:
+
+    def __init__(self, city, state):
+        self.city = city
+        self.state = state
+
+
+class Employee:
+
+    def __init__(self, name, address):
+        self.name = name
+        self.address = address
+
+
+address1 = Address("Dallas", "Texas")
+
+employee1 = Employee("Naveen", address1)
+
+
+print(employee1.name)
+# Naveen
+
+print(employee1.address.city)
+# Dallas
+
+print(employee1.address.state)
+# Texas
+
+
+# Relationship:
+#
+# Employee HAS-A Address
+#
+#
+# employee1
+#     |
+#     +-- address
+#            |
+#            +-- city
+#            |
+#            +-- state
+
+
+# Inheritance:
+#
+# Manager IS-A Employee
+#
+#
+# Composition:
+#
+# Employee HAS-A Address
+
+
+# ============================================================
+# 19. MULTIPLE INHERITANCE
+# ============================================================
+
+class Employee:
+
+    def get_role(self):
+        return "Employee"
+
+
+class Student:
+
+    def get_role(self):
+        return "Student"
+
+
+class Intern(Employee, Student):
+    pass
+
+
+intern1 = Intern()
+
+print(intern1.get_role())
+
+# Employee
+
+
+# Intern inherits from TWO classes:
+#
+# Employee
+# Student
+
+
+# ============================================================
+# 20. MRO — METHOD RESOLUTION ORDER
+# ============================================================
+
+print(Intern.mro())
+
+
+# Conceptually:
+#
+# Intern
+#   ↓
+# Employee
+#   ↓
+# Student
+#   ↓
+# object
+#
+#
+# When Python sees:
+#
+# intern1.get_role()
+#
+# it searches according to the MRO.
+#
+#
+# Employee.get_role()
+#
+# is found before:
+#
+# Student.get_role()
+#
+# so:
+#
+# intern1.get_role()
+#
+# returns:
+#
+# Employee
+
+
+# IMPORTANT:
+#
+# get_role()
+#
+# asks:
+#
+# "Run this method."
+#
+#
+# mro()
+#
+# asks:
+#
+# "What order will Python search when looking
+#  for methods/attributes?"
+
+
+# ============================================================
+# 21. ABSTRACT CLASSES
+# ============================================================
+
+from abc import ABC, abstractmethod
+
+
+class Shape(ABC):
+
+    @abstractmethod
+    def calculate_area(self):
+        pass
+
+
+class Rectangle(Shape):
+
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+
+    def calculate_area(self):
+        return self.length * self.width
+
+
+rectangle1 = Rectangle(10, 5)
+
+print(rectangle1.calculate_area())
+
+# 50
+
+
+# Shape is an abstract class.
+#
+# Rectangle inherits Shape.
+#
+# Shape requires:
+#
+# calculate_area()
+#
+#
+# Rectangle MUST implement it before Rectangle
+# objects can be created.
+
+
+# This would fail:
+#
+# class Rectangle(Shape):
+#     pass
+#
+# rectangle1 = Rectangle()
+#
+#
+# because calculate_area() is still abstract.
+
+
+# ============================================================
+# FINAL OOP COMBINED EXAMPLE
+# ============================================================
+
+from abc import ABC, abstractmethod
+
+
+class Employee(ABC):
+
+    # Class attribute
+    company = "ABC Corp"
+
+
+    # Constructor
+    def __init__(self, name, salary):
+
+        self.name = name
+        self.salary = salary
+
+
+    # Abstract method
+    @abstractmethod
+    def calculate_bonus(self):
+        pass
+
+
+    # Class method
+    @classmethod
+    def get_company(cls):
+
+        return cls.company
+
+
+    # Static method
+    @staticmethod
+    def is_valid_salary(salary):
+
+        return salary >= 0
+
+
+class Developer(Employee):
+
+    # Polymorphism / implementation of abstract method
+    def calculate_bonus(self):
+
+        return self.salary * 0.08
+
+
+class Manager(Employee):
+
+    # Polymorphism / implementation of abstract method
+    def calculate_bonus(self):
+
+        return self.salary * 0.10
+
+
+manager1 = Manager("Bob", 100000)
+
+developer1 = Developer("Alice", 100000)
+
+
+print(manager1.name)
+# Bob
+
+print(manager1.calculate_bonus())
+# 10000.0
+
+
+print(developer1.name)
+# Alice
+
+print(developer1.calculate_bonus())
+# 8000.0
+
+
+print(Employee.get_company())
+# ABC Corp
+
+
+print(Employee.is_valid_salary(100000))
+# True
+
+print(Employee.is_valid_salary(-500))
+# False
+
+
+# ============================================================
+# OOP QUICK CHEAT SHEET
+# ============================================================
+
+
+# ------------------------------------------------------------
+# CLASS
+# ------------------------------------------------------------
+
+# class Employee:
+#     ...
+
+
+# ------------------------------------------------------------
+# CONSTRUCTOR
+# ------------------------------------------------------------
+
+# def __init__(self, name):
+#     self.name = name
+
+
+# ------------------------------------------------------------
+# CREATE OBJECT
+# ------------------------------------------------------------
+
+# employee1 = Employee("Naveen")
+
+
+# ------------------------------------------------------------
+# INSTANCE ATTRIBUTE
+# ------------------------------------------------------------
+
+# self.name
+# self.salary
+
+
+# ------------------------------------------------------------
+# CLASS ATTRIBUTE
+# ------------------------------------------------------------
+
+# class Employee:
+#     company = "ABC Corp"
+#
+# Employee.company
+
+
+# ------------------------------------------------------------
+# INSTANCE METHOD
+# ------------------------------------------------------------
+
+# def get_salary(self):
+#     return self.salary
+
+
+# ------------------------------------------------------------
+# CLASS METHOD
+# ------------------------------------------------------------
+
+# @classmethod
+# def get_company(cls):
+#     return cls.company
+
+
+# ------------------------------------------------------------
+# STATIC METHOD
+# ------------------------------------------------------------
+
+# @staticmethod
+# def is_valid_salary(salary):
+#     return salary >= 0
+
+
+# ------------------------------------------------------------
+# INHERITANCE
+# ------------------------------------------------------------
+
+# class Manager(Employee):
+#     ...
+
+
+# Manager IS-A Employee
+
+
+# ------------------------------------------------------------
+# super()
+# ------------------------------------------------------------
+
+# class Manager(Employee):
+#
+#     def __init__(self, name, salary, team_size):
+#
+#         super().__init__(name, salary)
+#
+#         self.team_size = team_size
+
+
+# ------------------------------------------------------------
+# METHOD OVERRIDING
+# ------------------------------------------------------------
+
+# class Employee:
+#
+#     def get_role(self):
+#         return "Employee"
+#
+#
+# class Manager(Employee):
+#
+#     def get_role(self):
+#         return "Manager"
+
+
+# ------------------------------------------------------------
+# POLYMORPHISM
+# ------------------------------------------------------------
+
+# employee.calculate_bonus()
+#
+# Same call.
+# Behavior depends on the actual object.
+
+
+# ------------------------------------------------------------
+# ENCAPSULATION
+# ------------------------------------------------------------
+
+# Public:
+#
+# self.balance
+#
+#
+# Internal-use convention:
+#
+# self._balance
+#
+#
+# Name mangling:
+#
+# self.__balance
+
+
+# ------------------------------------------------------------
+# PROPERTY
+# ------------------------------------------------------------
+
+# @property
+# def price(self):
+#     return self.__price
+#
+#
+# @price.setter
+# def price(self, value):
+#
+#     if value >= 0:
+#         self.__price = value
+
+
+# ------------------------------------------------------------
+# isinstance()
+# ------------------------------------------------------------
+
+# isinstance(object, Class)
+
+
+# ------------------------------------------------------------
+# issubclass()
+# ------------------------------------------------------------
+
+# issubclass(ChildClass, ParentClass)
+
+
+# ------------------------------------------------------------
+# ALTERNATIVE CONSTRUCTOR
+# ------------------------------------------------------------
+
+# @classmethod
+# def from_string(cls, text):
+#
+#     name, salary = text.split("-")
+#
+#     return cls(name, int(salary))
+
+
+# ------------------------------------------------------------
+# COMPOSITION
+# ------------------------------------------------------------
+
+# Employee HAS-A Address
+#
+#
+# employee.address.city
+
+
+# ------------------------------------------------------------
+# MULTIPLE INHERITANCE
+# ------------------------------------------------------------
+
+# class Intern(Employee, Student):
+#     pass
+
+
+# ------------------------------------------------------------
+# MRO
+# ------------------------------------------------------------
+
+# Intern.mro()
+#
+# Shows the order Python searches classes.
+
+
+# ------------------------------------------------------------
+# ABSTRACT CLASS
+# ------------------------------------------------------------
+
+# from abc import ABC, abstractmethod
+#
+#
+# class Shape(ABC):
+#
+#     @abstractmethod
+#     def calculate_area(self):
+#         pass
+
+
+# ============================================================
+# MOST IMPORTANT OOP RELATIONSHIPS
+# ============================================================
+
+# INHERITANCE
+#
+# Manager IS-A Employee
+#
+# Car IS-A Vehicle
+
+
+# COMPOSITION
+#
+# Employee HAS-A Address
+#
+# Car HAS-A Engine
+
+
+# ============================================================
+# SELF vs CLS
+# ============================================================
+
+# self
+#   -> current OBJECT
+#
+# cls
+#   -> current CLASS
+
+
+# ============================================================
+# METHOD TYPE DECISION
+# ============================================================
+
+# Does the method need data from a specific object?
+#
+# YES
+#   -> instance method
+#   -> self
+#
+#
+# Does the method need class-level data?
+#
+# YES
+#   -> @classmethod
+#   -> cls
+#
+#
+# Does it need neither object data nor class data?
+#
+# YES
+#   -> @staticmethod
+
+
+# ============================================================
+# __init__ IN INHERITANCE
+# ============================================================
+
+# If the child needs exactly the same initialization
+# as the parent:
+#
+# DON'T write another __init__.
+#
+#
+# Example:
+#
+# class Employee:
+#
+#     def __init__(self, name, salary):
+#         self.name = name
+#         self.salary = salary
+#
+#
+# class Manager(Employee):
+#     pass
+#
+#
+# Manager automatically inherits Employee.__init__.
+
+
+# If the child needs EXTRA initialization:
+#
+# Write the child's __init__ and use super().
+#
+#
+# class Manager(Employee):
+#
+#     def __init__(self, name, salary, team_size):
+#
+#         super().__init__(name, salary)
+#
+#         self.team_size = team_size
+
+
+# ============================================================
+# FINAL MEMORY MAP
+# ============================================================
+
+# class
+#   |
+#   +-- object
+#   |
+#   +-- __init__
+#   |      |
+#   |      +-- self
+#   |      +-- instance attributes
+#   |
+#   +-- instance methods
+#   |
+#   +-- class attributes
+#   |
+#   +-- @classmethod
+#   |      |
+#   |      +-- cls
+#   |      +-- alternative constructors
+#   |
+#   +-- @staticmethod
+#   |
+#   +-- encapsulation
+#   |      |
+#   |      +-- _attribute
+#   |      +-- __attribute
+#   |      +-- @property
+#   |
+#   +-- inheritance
+#   |      |
+#   |      +-- super()
+#   |      +-- overriding
+#   |      +-- polymorphism
+#   |      +-- isinstance()
+#   |      +-- issubclass()
+#   |
+#   +-- composition
+#   |      |
+#   |      +-- HAS-A
+#   |
+#   +-- multiple inheritance
+#   |      |
+#   |      +-- MRO
+#   |
+#   +-- abstract classes
+#          |
+#          +-- ABC
+#          +-- @abstractmethod
+
+
+# ============================================================
+# END OF REVISION COPY 8 — PYTHON OOP
+# ============================================================
