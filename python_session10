@@ -1,0 +1,112 @@
+# ============================================================
+# REVISION COPY 9
+# PYTHON ITERATORS, GENERATORS & ITERTOOLS
+# ============================================================
+#
+# TOPICS COVERED:
+#
+# 01. Iterable vs Iterator
+# 02. iter(), next(), StopIteration
+# 03. next() with a default value
+# 04. Custom Iterator Classes
+# 05. Generator Functions and yield
+# 06. Generator Expressions
+# 07. yield from
+# 08. Generator Exhaustion
+# 09. Generator Pipelines
+# 10. itertools.count()
+# 11. itertools.cycle()
+# 12. itertools.repeat()
+# 13. itertools.chain()
+# 14. itertools.islice()
+# 15. itertools.accumulate()
+# 16. itertools.groupby()
+# 17. itertools.combinations()
+# 18. itertools.permutations()
+# 19. itertools.product()
+# 20. itertools.takewhile()
+# 21. itertools.dropwhile()
+# 22. itertools.compress()
+# 23. itertools.starmap()
+# 24. itertools.pairwise()
+# 25. itertools.batched()
+# 26. itertools.zip_longest()
+# 27. itertools.tee()
+# 28. itertools.filterfalse()
+# 29. Combining count() and zip()
+# 30. Generator Pipelines and Final Project
+#
+# ============================================================
+
+
+# ============================================================
+# 01. ITERABLE VS ITERATOR
+# ============================================================
+
+# ITERABLE:
+# An object that can provide an iterator.
+#
+# Examples:
+# list, tuple, string, dictionary, set, range
+#
+# ITERATOR:
+# An object that returns elements one at a time using next().
+#
+# An iterator implements:
+# __iter__()
+# __next__()
+#
+# Iterators remember their current position.
+
+numbers = [10, 20, 30]
+
+iterator = iter(numbers)
+
+print(next(iterator))  # 10
+print(next(iterator))  # 20
+print(next(iterator))  # 30
+
+# Important:
+# A list is iterable but is not itself an iterator.
+# iter(list) creates an iterator.
+
+
+# ============================================================
+# 02. iter(), next(), StopIteration
+# ============================================================
+
+# iter(iterable):
+# Returns an iterator.
+#
+# next(iterator):
+# Returns the next available element.
+#
+# If no elements remain, next() raises StopIteration.
+
+numbers = [5, 10]
+
+iterator = iter(numbers)
+
+print(next(iterator))  # 5
+print(next(iterator))  # 10
+
+try:
+    print(next(iterator))
+except StopIteration:
+    print("Iterator exhausted")
+
+# OUTPUT:
+# 5
+# 10
+# Iterator exhausted
+
+
+# ============================================================
+# 03. next() WITH DEFAULT VALUE
+# ============================================================
+
+# Syntax:
+# next(iterator, default)
+#
+# Instead of raising StopIteration,
+# Python
